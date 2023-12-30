@@ -3,121 +3,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white">
+    style="@style/SettingsLayout">
+    <LinearLayout
+        style="@style/StandartHorizontalLayout"
+        android:padding="0dp">
+        <Button
+            android:id="@+id/button_left"
+            style="@style/SettingsButton"
+            app:icon="@drawable/left"
+            app:iconTint="@color/black"/>
+
+        <TextView
+            style="@style/SettingsText"
+            android:fontFamily="@font/ys_display_medium"
+            android:text="@string/settings"
+            android:textSize="@dimen/text_size_big"
+            android:padding="@dimen/button_margin"
+            />
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="80dp">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/button_margin">
-            <Button
-                android:id="@+id/button_left"
-                android:layout_width="@dimen/text_height"
-                android:layout_height="@dimen/text_height"
-                android:backgroundTint="@color/white"
-                app:cornerRadius="0dp"
-                app:icon="@drawable/left"
-                app:iconTint="@color/black"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/icon_padding"/>
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/text_height"
-                android:paddingLeft="12dp"
-                android:paddingTop="10dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/settings"
-                    android:textSize="@dimen/text_size_big"
-                    android:textColor="@color/new_black"/>
-            </FrameLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/string_height"
-            android:orientation="horizontal"
-            android:layout_marginTop="40dp"
-            android:paddingHorizontal="@dimen/button_margin">
+            style="@style/StandartHorizontalLayout">
             <TextView
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
+                style="@style/SettingsText"
                 android:text="@string/night_theme"
-                android:textSize="@dimen/text_size_little"
-                android:textColor="@color/black"/>
-            <Switch
-                android:layout_width="56dp"
-                android:layout_height="40dp"
-                android:layout_marginRight="@dimen/button_margin"/>
+                />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                style="@style/SettingsSwitch"
+                 />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/string_height"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/button_margin">
+            style="@style/StandartHorizontalLayout">
             <TextView
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:text="@string/share_link"
-                android:textSize="@dimen/text_size_little"
-                android:textColor="@color/black"/>
+                style="@style/SettingsText"
+                android:text="@string/share_link" />
             <Button
-                android:layout_width="@dimen/text_height"
-                android:layout_height="@dimen/text_height"
-                android:backgroundTint="@color/white"
-                app:cornerRadius="0dp"
-                app:icon="@drawable/share"
-                app:iconTint="@color/grey"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/icon_padding"
-                />
+                android:id="@+id/button_share"
+                style="@style/SettingsButton"
+                app:icon="@drawable/share"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/string_height"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/button_margin">
+            style="@style/StandartHorizontalLayout">
             <TextView
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:text="@string/support"
-                android:textSize="@dimen/text_size_little"
-                android:textColor="@color/black"/>
+                style="@style/SettingsText"
+                android:text="@string/support" />
             <Button
-                android:layout_width="@dimen/text_height"
-                android:layout_height="@dimen/text_height"
-                android:backgroundTint="@color/white"
-                app:cornerRadius="0dp"
-                app:icon="@drawable/support"
-                app:iconTint="@color/grey"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/icon_padding"
-                />
+                android:id="@+id/button_support"
+                style="@style/SettingsButton"
+                app:icon="@drawable/support" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/string_height"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/button_margin">
+            style="@style/StandartHorizontalLayout">
             <TextView
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_of_use"
-                android:textSize="@dimen/text_size_little"
-                android:textColor="@color/black"/>
+                style="@style/SettingsText"
+                android:text="@string/legal" />
             <Button
-                android:layout_width="@dimen/text_height"
-                android:layout_height="@dimen/text_height"
-                android:backgroundTint="@color/white"
+                android:id="@+id/button_legal"
+                style="@style/SettingsButton"
                 app:cornerRadius="0dp"
-                app:icon="@drawable/right"
-                app:iconTint="@color/grey"
-                app:iconGravity="textStart"
-                app:iconPadding="@dimen/icon_padding"
-                />
+                app:icon="@drawable/right"/>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

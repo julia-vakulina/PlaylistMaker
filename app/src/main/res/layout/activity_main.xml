@@ -20,7 +20,7 @@
             style="@style/ButtonMain"
             android:id="@+id/button_search"
             android:text="@string/search"
-            app:icon="@drawable/vector"
+            app:icon="@drawable/search"
             >
         </Button>
 

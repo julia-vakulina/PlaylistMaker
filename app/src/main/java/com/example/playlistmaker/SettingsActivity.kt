@@ -22,15 +22,15 @@ class SettingsActivity : AppCompatActivity() {
         }
         buttonShare.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
-            val shareLink = R.string.share_link_text
+            val shareLink = getString(R.string.share_link_text)
             shareIntent.putExtra(Intent.EXTRA_TEXT, shareLink)
             shareIntent.type = "text/plain"
             startActivity(shareIntent)
         }
         buttonSupport.setOnClickListener {
-            val message = R.string.support_text
-            val email = R.string.support_email
-            val subject = R.string.support_subject
+            val message = getString(R.string.support_text)
+            val email = getString(R.string.support_email)
+            val subject = getString(R.string.support_subject)
             val supportIntent = Intent(Intent.ACTION_SENDTO)
             supportIntent.type = "text/plain"
             supportIntent.data = Uri.parse("mailto:")

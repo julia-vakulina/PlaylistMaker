@@ -1,11 +1,14 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -16,10 +19,17 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        val buttonLeft = findViewById<Button>(R.id.button_left_search)
+        buttonLeft.setOnClickListener {
+            val leftIntent = Intent(this, MainActivity::class.java)
+            startActivity(leftIntent)
+        }
         val editTextSearch = findViewById<EditText>(R.id.editTextSearch)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         clearButton.setOnClickListener {
             editTextSearch.setText("")
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            inputMethodManager?.hideSoftInputFromWindow(editTextSearch.windowToken, 0)
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -29,28 +39,26 @@ class SearchActivity : AppCompatActivity() {
                 clearButton.visibility = clearButtonVisibility(s)
             }
             override fun afterTextChanged(s: Editable?) {
+
             }
         }
         editTextSearch.addTextChangedListener(simpleTextWatcher)
         if (savedInstanceState != null) {
-            stringValue = savedInstanceState.getString(STRING_KEY, STRING_DEF)
-            editTextSearch.setText(stringValue)
+            searchText = savedInstanceState.getString(STRING_KEY, searchText)
+            editTextSearch.setText(searchText)
         }
 
     }
-    var stringValue: String = STRING_DEF
+    private var searchText = ""
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(STRING_KEY, stringValue)
+        outState.putString(STRING_KEY, searchText)
     }
-    companion object {
-        const val STRING_KEY = "1"
-        const val STRING_DEF = ""
-    }
+
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        stringValue = savedInstanceState.getString(STRING_KEY, STRING_DEF)
+        searchText = savedInstanceState.getString(STRING_KEY, searchText)
     }
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
@@ -58,5 +66,8 @@ class SearchActivity : AppCompatActivity() {
         } else {
             View.VISIBLE
         }
+    }
+    companion object {
+        const val STRING_KEY = "1"
     }
 }

@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/button_margin"
-        android:paddingVertical="8dp"
+
         android:orientation="horizontal"
         android:background="@drawable/rounded_edittext"
         android:layout_marginTop="56dp"
@@ -41,13 +41,14 @@
             android:textSize="@dimen/text_size_little"
             android:textColor="@color/black"
             android:drawableLeft="@drawable/search"
-            android:drawablePadding="8dp"/>
+            android:drawablePadding="8dp"
+            android:layout_marginVertical="8dp"/>
         <ImageView
             android:id="@+id/clearIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:src="@drawable/clear"
             android:visibility="visible"
             />
     </FrameLayout>

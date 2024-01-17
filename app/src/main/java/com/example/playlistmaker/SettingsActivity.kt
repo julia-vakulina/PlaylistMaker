@@ -40,7 +40,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(supportIntent)
         }
         buttonLegal.setOnClickListener {
-            val legalIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://yandex.ru/legal/practicum_offer/"))
+            val legalIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.legal_link)))
             startActivity(legalIntent)
         }
     }

@@ -8,6 +8,7 @@
     <string name="share_link">Поделиться приложением</string>
     <string name="support">Написать в поддержку</string>
     <string name="legal">Пользовательское соглашение</string>
+    <string name="legal_link">https://yandex.ru/legal/practicum_offer/</string>
     <string name="support_email">julia.vakulina1@yandex.ru</string>
     <string name="support_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="support_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>

@@ -15,6 +15,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 
 class SearchActivity : AppCompatActivity() {
+    private lateinit var editTextSearch: EditText
+    private var searchText :String = ""
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +26,7 @@ class SearchActivity : AppCompatActivity() {
             val leftIntent = Intent(this, MainActivity::class.java)
             startActivity(leftIntent)
         }
-        val editTextSearch = findViewById<EditText>(R.id.editTextSearch)
+        editTextSearch = findViewById<EditText>(R.id.editTextSearch)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
         clearButton.setOnClickListener {
             editTextSearch.setText("")
@@ -39,26 +41,23 @@ class SearchActivity : AppCompatActivity() {
                 clearButton.visibility = clearButtonVisibility(s)
             }
             override fun afterTextChanged(s: Editable?) {
-
+                searchText = s.toString()
             }
         }
         editTextSearch.addTextChangedListener(simpleTextWatcher)
-        if (savedInstanceState != null) {
-            searchText = savedInstanceState.getString(STRING_KEY, searchText)
-            editTextSearch.setText(searchText)
-        }
+
 
     }
-    private var searchText = ""
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(STRING_KEY, searchText)
+        outState.putString(SEARCH_TEXT_KEY, searchText)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        searchText = savedInstanceState.getString(STRING_KEY, searchText)
+        val newSearchText = savedInstanceState.getString(SEARCH_TEXT_KEY, searchText)
+        editTextSearch.setText(newSearchText)
     }
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
@@ -68,6 +67,6 @@ class SearchActivity : AppCompatActivity() {
         }
     }
     companion object {
-        const val STRING_KEY = "1"
+        const val SEARCH_TEXT_KEY = "1"
     }
 }

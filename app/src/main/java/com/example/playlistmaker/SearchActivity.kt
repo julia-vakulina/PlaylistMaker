@@ -77,8 +77,7 @@ class SearchActivity : AppCompatActivity() {
 
         val buttonLeft = findViewById<Button>(R.id.button_left_search)
         buttonLeft.setOnClickListener {
-            val leftIntent = Intent(this, MainActivity::class.java)
-            startActivity(leftIntent)
+            this.onBackPressed()
         }
         editTextSearch = findViewById<EditText>(R.id.editTextSearch)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
@@ -121,7 +120,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
     companion object {
-        const val SEARCH_TEXT_KEY = "1"
+        private const val SEARCH_TEXT_KEY = "1"
     }
 
 

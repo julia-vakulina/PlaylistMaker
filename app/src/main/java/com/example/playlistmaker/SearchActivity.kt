@@ -22,27 +22,61 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
+private const val HISTORY_KEY = "history"
+
 class SearchActivity : AppCompatActivity() {
 
-   private val itunesBaseUrl = "https://itunes.apple.com"
 
+    private val itunesBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(itunesBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-
     private val itunesService = retrofit.create(ItunesAPI::class.java)
-
     private lateinit var editTextSearch: EditText
     private var searchText :String = ""
+    private lateinit var searchHistory: SearchHistory
+    private val tracks = mutableListOf<TrackFromAPI>()
+
+    override fun onStop() {
+        super.onStop()
+        searchHistory.putTracks()
+    }
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        //12
+        val clearHistory = findViewById<Button>(R.id.clearHistory)
+        val searchHistoryLayout = findViewById<LinearLayout>(R.id.searchHistory)
+        val searchHistoryView = findViewById<RecyclerView>(R.id.searchHistoryView)
+        val historyPrefs = getSharedPreferences(HISTORY_KEY, MODE_PRIVATE)
+
+        searchHistory = SearchHistory(historyPrefs)
+        searchHistory.getTracks()
+        val adapter = TrackAdapter(searchHistory.historyList, historyPrefs)
+
+        searchHistoryView.adapter = adapter
+        searchHistoryView.layoutManager = LinearLayoutManager(this)
+
+
+        clearHistory.setOnClickListener {
+            searchHistoryLayout.visibility = View.GONE
+            historyPrefs.edit().clear().apply()
+            searchHistory.historyList.clear()
+            adapter.notifyDataSetChanged()
+        }
+
         val trackView = findViewById<RecyclerView>(R.id.trackView)
         trackView.layoutManager = LinearLayoutManager(this)
         editTextSearch = findViewById(R.id.editTextSearch)
+        editTextSearch.setOnFocusChangeListener { view, hasFocus ->
+            searchHistoryLayout.visibility = if (hasFocus && editTextSearch.text.isEmpty()) View.VISIBLE else View.GONE
+        }
+
         val placeHolderNotFound = findViewById<LinearLayout>(R.id.placeHolderNotFound)
         val placeHolderNoConnect = findViewById<LinearLayout>(R.id.placeHolderNoConnect)
         val buttonUpdate = findViewById<Button>(R.id.buttonUpdate)
@@ -59,7 +93,7 @@ class SearchActivity : AppCompatActivity() {
                                     val tracks = response.body()?.results
                                     if (tracks?.isEmpty() == true)
                                         placeHolderNotFound.visibility = View.VISIBLE
-                                    else trackView.adapter = TrackAdapter(tracks!!)
+                                    else trackView.adapter = TrackAdapter(tracks!!, historyPrefs)
                                 }
                                 else placeHolderNoConnect.visibility = View.VISIBLE
 
@@ -96,9 +130,11 @@ class SearchActivity : AppCompatActivity() {
             editTextSearch.setText("")
             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             inputMethodManager?.hideSoftInputFromWindow(editTextSearch.windowToken, 0)
-            trackView.adapter = TrackAdapter(listOf())
+            trackView.adapter = TrackAdapter(listOf(), historyPrefs)
             placeHolderNoConnect.visibility = View.GONE
             placeHolderNotFound.visibility = View.GONE
+            adapter.notifyDataSetChanged()
+            searchHistoryView.adapter = adapter
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -106,6 +142,10 @@ class SearchActivity : AppCompatActivity() {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 clearButton.visibility = clearButtonVisibility(s)
+                if (editTextSearch.hasFocus() && s?.isEmpty() == false) searchHistoryLayout.visibility = View.GONE
+                else {
+                    searchHistoryLayout.visibility = View.VISIBLE
+                }
             }
             override fun afterTextChanged(s: Editable?) {
                 searchText = s.toString()
@@ -134,7 +174,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
     companion object {
-        private const val SEARCH_TEXT_KEY = "1"
+        private const val SEARCH_TEXT_KEY = "search_text_key"
     }
 
 

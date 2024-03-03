@@ -28,7 +28,7 @@ class SearchHistory (private val sharedPreferences: SharedPreferences) {
     fun listFromJson(json: String?): MutableList<TrackFromAPI>{
         val gson = Gson()
         val listType = object : TypeToken<MutableList<TrackFromAPI>>() {}.type
-        return gson.fromJson(json, listType) //?: mutableListOf()
+        return gson.fromJson(json, listType) ?: mutableListOf()
     }
 
     fun addTrack(track: TrackFromAPI){

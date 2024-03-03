@@ -136,6 +136,7 @@ class SearchActivity : AppCompatActivity() {
             //searchHistoryView.adapter = adapter
             searchHistory.getTracks()
             searchHistoryView.adapter = TrackAdapter(searchHistory.historyList, historyPrefs)
+            if (searchHistory.historyList.size==0) searchHistoryLayout.visibility = View.GONE
         }
 
         val simpleTextWatcher = object : TextWatcher {

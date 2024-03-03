@@ -57,25 +57,24 @@ class SearchActivity : AppCompatActivity() {
 
         searchHistory = SearchHistory(historyPrefs)
         searchHistory.getTracks()
-        val adapter = TrackAdapter(searchHistory.historyList, historyPrefs)
 
-        searchHistoryView.adapter = adapter
+        searchHistoryView.adapter = TrackAdapter(searchHistory.historyList, historyPrefs)
         searchHistoryView.layoutManager = LinearLayoutManager(this)
 
 
         clearHistory.setOnClickListener {
             searchHistoryLayout.visibility = View.GONE
-            historyPrefs.edit().clear().apply()
-            searchHistory.historyList.clear()
-            adapter.notifyDataSetChanged()
+            searchHistory.clear()
         }
 
         val trackView = findViewById<RecyclerView>(R.id.trackView)
         trackView.layoutManager = LinearLayoutManager(this)
         editTextSearch = findViewById(R.id.editTextSearch)
         editTextSearch.setOnFocusChangeListener { view, hasFocus ->
-            searchHistoryLayout.visibility = if (hasFocus && editTextSearch.text.isEmpty()) View.VISIBLE else View.GONE
+            searchHistoryLayout.visibility = if (hasFocus && editTextSearch.text.isEmpty()
+                && searchHistory.historyList.size!=0) View.VISIBLE else View.GONE
         }
+
 
         val placeHolderNotFound = findViewById<LinearLayout>(R.id.placeHolderNotFound)
         val placeHolderNoConnect = findViewById<LinearLayout>(R.id.placeHolderNoConnect)
@@ -133,8 +132,10 @@ class SearchActivity : AppCompatActivity() {
             trackView.adapter = TrackAdapter(listOf(), historyPrefs)
             placeHolderNoConnect.visibility = View.GONE
             placeHolderNotFound.visibility = View.GONE
-            adapter.notifyDataSetChanged()
-            searchHistoryView.adapter = adapter
+            //adapter.notifyDataSetChanged()
+            //searchHistoryView.adapter = adapter
+            searchHistory.getTracks()
+            searchHistoryView.adapter = TrackAdapter(searchHistory.historyList, historyPrefs)
         }
 
         val simpleTextWatcher = object : TextWatcher {

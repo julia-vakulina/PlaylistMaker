@@ -19,7 +19,7 @@ class TrackAdapter(
         holder.bind(tracks[position])
         holder.itemView.setOnClickListener {
             searchHistory.addTrack(tracks[position])
-            searchHistory.putTracks()
+
         }
     }
     override fun getItemCount() = tracks.size

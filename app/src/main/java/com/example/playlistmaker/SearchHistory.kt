@@ -9,6 +9,10 @@ private const val HISTORY_SIZE = 10
 class SearchHistory (private val sharedPreferences: SharedPreferences) {
     var historyList = mutableListOf<TrackFromAPI>()
 
+    fun clear() {
+        sharedPreferences.edit().clear().apply()
+        historyList = mutableListOf<TrackFromAPI>()
+    }
     fun getTracks() {
         val s = sharedPreferences.getString(HISTORY_KEY, null)
         historyList = listFromJson(s)
@@ -24,10 +28,11 @@ class SearchHistory (private val sharedPreferences: SharedPreferences) {
     fun listFromJson(json: String?): MutableList<TrackFromAPI>{
         val gson = Gson()
         val listType = object : TypeToken<MutableList<TrackFromAPI>>() {}.type
-        return gson.fromJson(json, listType) ?: mutableListOf()
+        return gson.fromJson(json, listType) //?: mutableListOf()
     }
 
     fun addTrack(track: TrackFromAPI){
+        getTracks()
         if (historyList.contains(track)) {
             historyList.remove(track)
         }

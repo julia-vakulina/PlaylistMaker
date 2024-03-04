@@ -39,11 +39,6 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistory: SearchHistory
     private val tracks = mutableListOf<TrackFromAPI>()
 
-    override fun onStop() {
-        super.onStop()
-        searchHistory.putTracks()
-    }
-
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,9 +76,9 @@ class SearchActivity : AppCompatActivity() {
         val buttonUpdate = findViewById<Button>(R.id.buttonUpdate)
         // слушатель на едит текст
         fun searchTrack(text: String) {
-            editTextSearch.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    itunesService.search(editTextSearch.text.toString())
+            //editTextSearch.setOnEditorActionListener { _, actionId, _ ->
+                //if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    itunesService.search(text)
                         .enqueue(object : Callback<TracksResponse> {
                             override fun onResponse(
                                 call: Call<TracksResponse>,
@@ -102,9 +97,9 @@ class SearchActivity : AppCompatActivity() {
                             }
                         })
                     true
-                }
+                //}
                 false
-            }
+            //}
         }
         editTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {

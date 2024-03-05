@@ -85,14 +85,23 @@ class SearchActivity : AppCompatActivity() {
                                 response: Response<TracksResponse>){
                                 if (response.code() == 200) {
                                     val tracks = response.body()?.results
-                                    if (tracks?.isEmpty() == true)
+                                    if (tracks?.isEmpty() == true) {
                                         placeHolderNotFound.visibility = View.VISIBLE
+                                        placeHolderNoConnect.visibility = View.GONE
+                                    }
+
                                     else trackView.adapter = TrackAdapter(tracks!!, historyPrefs)
                                 }
-                                else placeHolderNoConnect.visibility = View.VISIBLE
+                                else {
+                                    placeHolderNotFound.visibility = View.GONE
+                                    placeHolderNoConnect.visibility = View.VISIBLE
+
+                                }
+
 
                             }
                             override fun onFailure(call: Call<TracksResponse>, t : Throwable){
+                                placeHolderNotFound.visibility = View.GONE
                                 placeHolderNoConnect.visibility = View.VISIBLE
                             }
                         })
@@ -112,6 +121,7 @@ class SearchActivity : AppCompatActivity() {
         buttonUpdate.setOnClickListener() {
             searchTrack(editTextSearch.text.toString())
             placeHolderNoConnect.visibility = View.GONE
+            placeHolderNotFound.visibility = View.GONE
         }
 
         val buttonLeft = findViewById<Button>(R.id.button_left_search)

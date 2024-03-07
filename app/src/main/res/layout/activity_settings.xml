@@ -28,14 +28,12 @@
         android:layout_marginTop="80dp">
         <LinearLayout
             style="@style/StandartHorizontalLayout">
-            <TextView
-                style="@style/SettingsText"
-                android:text="@string/night_theme"
-                />
-
             <com.google.android.material.switchmaterial.SwitchMaterial
-                style="@style/SettingsSwitch"
-                 />
+                android:id="@+id/themeSwitcher"
+                android:text="Темная тема"
+                android:layout_gravity="start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout
             style="@style/StandartHorizontalLayout">

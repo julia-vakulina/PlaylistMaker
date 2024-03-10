@@ -24,7 +24,6 @@ class TrackAdapter(
             searchHistory.addTrack(tracks[position])
             val context = holder.itemView.context
             val playerIntent = Intent(context, PlayerActivity::class.java)
-            context.startActivity(playerIntent)
             val gson = Gson()
             val json = gson.toJson(tracks[position])
             context.startActivity(playerIntent.putExtra(INTENT_KEY, json))

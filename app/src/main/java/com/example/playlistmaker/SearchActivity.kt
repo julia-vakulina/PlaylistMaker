@@ -24,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 private const val HISTORY_KEY = "history"
+const val INTENT_KEY = "key"
 
 class SearchActivity : AppCompatActivity() {
 

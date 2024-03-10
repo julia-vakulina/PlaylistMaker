@@ -10,8 +10,7 @@
         <Button
             android:id="@+id/button_left"
             style="@style/SettingsButton"
-            app:icon="@drawable/left"
-            app:iconTint="@color/black"/>
+            app:icon="@drawable/left"/>
 
         <TextView
             style="@style/SettingsText"

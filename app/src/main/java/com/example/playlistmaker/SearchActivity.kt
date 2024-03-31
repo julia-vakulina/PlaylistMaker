@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -14,6 +16,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
@@ -27,7 +30,6 @@ private const val HISTORY_KEY = "history"
 const val INTENT_KEY = "key"
 
 class SearchActivity : AppCompatActivity() {
-
 
     private val itunesBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
@@ -45,6 +47,7 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         //12
         val clearHistory = findViewById<Button>(R.id.clearHistory)
         val searchHistoryLayout = findViewById<LinearLayout>(R.id.searchHistory)
@@ -77,40 +80,52 @@ class SearchActivity : AppCompatActivity() {
         val buttonUpdate = findViewById<Button>(R.id.buttonUpdate)
         // слушатель на едит текст
         fun searchTrack(text: String) {
-            //editTextSearch.setOnEditorActionListener { _, actionId, _ ->
-                //if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    itunesService.search(text)
-                        .enqueue(object : Callback<TracksResponse> {
-                            override fun onResponse(
-                                call: Call<TracksResponse>,
-                                response: Response<TracksResponse>){
-                                if (response.code() == 200) {
-                                    val tracks = response.body()?.results
-                                    if (tracks?.isEmpty() == true) {
-                                        placeHolderNotFound.visibility = View.VISIBLE
-                                        placeHolderNoConnect.visibility = View.GONE
-                                    }
-
-                                    else trackView.adapter = TrackAdapter(tracks!!, historyPrefs)
-                                }
-                                else {
-                                    placeHolderNotFound.visibility = View.GONE
-                                    placeHolderNoConnect.visibility = View.VISIBLE
-
+            if (text.isNotEmpty()) {
+                progressBar.visibility = View.VISIBLE
+                itunesService.search(text)
+                    .enqueue(object : Callback<TracksResponse> {
+                        override fun onResponse(
+                            call: Call<TracksResponse>,
+                            response: Response<TracksResponse>){
+                            progressBar.visibility = View.GONE
+                            if (response.code() == 200) {
+                                val tracks = response.body()?.results
+                                if (tracks?.isEmpty() == true) {
+                                    placeHolderNotFound.visibility = View.VISIBLE
+                                    placeHolderNoConnect.visibility = View.GONE
                                 }
 
-
+                                else trackView.adapter = TrackAdapter(tracks!!, historyPrefs)
                             }
-                            override fun onFailure(call: Call<TracksResponse>, t : Throwable){
+                            else {
                                 placeHolderNotFound.visibility = View.GONE
                                 placeHolderNoConnect.visibility = View.VISIBLE
+
                             }
-                        })
+
+
+                        }
+                        override fun onFailure(call: Call<TracksResponse>, t : Throwable){
+                            progressBar.visibility = View.GONE
+                            placeHolderNotFound.visibility = View.GONE
+                            placeHolderNoConnect.visibility = View.VISIBLE
+                        }
+                    })
+
+            }
                     true
                 //}
                 false
             //}
         }
+        //14
+        val handler = Handler(Looper.getMainLooper())
+        val searchRunnable = Runnable { searchTrack(editTextSearch.text.toString()) }
+        fun searchDebounce() {
+            handler.removeCallbacks(searchRunnable)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
+
         editTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack(editTextSearch.text.toString())
@@ -149,6 +164,7 @@ class SearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchDebounce()
                 clearButton.visibility = clearButtonVisibility(s)
                 if (editTextSearch.hasFocus() && s?.isEmpty() == false) searchHistoryLayout.visibility = View.GONE
                 else {
@@ -183,6 +199,7 @@ class SearchActivity : AppCompatActivity() {
     }
     companion object {
         private const val SEARCH_TEXT_KEY = "search_text_key"
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
 

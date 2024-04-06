@@ -68,10 +68,10 @@
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="@id/left_guideline"
         app:layout_constraintTop_toBottomOf="@id/artistTrack_Track"/>
-    <Button
+    <ImageView
         android:id="@+id/button_play_track"
         style="@style/TrackButtonPlay"
-        app:icon="@drawable/play"
+        android:src="@drawable/play"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/artistTrack_Track"/>
@@ -84,9 +84,10 @@
         app:layout_constraintEnd_toStartOf="@id/right_guideline"
         app:layout_constraintTop_toBottomOf="@id/artistTrack_Track"/>
     <TextView
+        android:id="@+id/track_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0:30"
+        android:text="00:00"
         style="@style/TextViewSearch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

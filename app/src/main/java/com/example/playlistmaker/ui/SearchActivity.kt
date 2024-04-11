@@ -1,8 +1,7 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -19,6 +18,11 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.data.network.ItunesAPI
+import com.example.playlistmaker.R
+import com.example.playlistmaker.presentation.SearchHistory
+import com.example.playlistmaker.data.dto.TracksResponse
+import com.example.playlistmaker.domain.models.TrackFromAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

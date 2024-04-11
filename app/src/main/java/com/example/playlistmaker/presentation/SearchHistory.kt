@@ -1,10 +1,12 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation
 
 import android.content.SharedPreferences
+import com.example.playlistmaker.domain.models.TrackFromAPI
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-private const val HISTORY_KEY = "history"
-private const val HISTORY_SIZE = 10
+
+ const val HISTORY_KEY = "history"
+ const val HISTORY_SIZE = 10
 
 class SearchHistory (private val sharedPreferences: SharedPreferences) {
     var historyList = mutableListOf<TrackFromAPI>()
@@ -37,7 +39,7 @@ class SearchHistory (private val sharedPreferences: SharedPreferences) {
             historyList.remove(track)
         }
         if (historyList.size >= HISTORY_SIZE){
-            historyList.removeAt(HISTORY_SIZE-1)
+            historyList.removeAt(HISTORY_SIZE -1)
         }
         historyList.add(0, track)
         putTracks()

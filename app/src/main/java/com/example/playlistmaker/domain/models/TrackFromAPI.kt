@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.domain.models
 
 data class TrackFromAPI(
     val trackName: String ,// Название трека

@@ -77,7 +77,7 @@
         <item name="textAllCaps">false</item>
         <item name="cornerRadius">54dp</item>
     </style>
-    <style name="TrackButton">
+    <style name="TrackButton1">
         <item name="android:layout_width">51dp</item>
         <item name="android:layout_height">51dp</item>
         <item name="android:background">@android:color/transparent</item>
@@ -85,7 +85,19 @@
         <item name="cornerRadius">0dp</item>
         <item name="iconPadding">@dimen/icon_padding</item>
         <item name="iconTint">@color/white</item>
-        <item name="backgroundTint">@color/grey</item>
+        <item name="backgroundTint">@color/new_white_transp</item>
+        <item name="android:src">@drawable/plus</item>
+    </style>
+    <style name="TrackButton2">
+        <item name="android:layout_width">51dp</item>
+        <item name="android:layout_height">51dp</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="iconGravity">textEnd</item>
+        <item name="cornerRadius">0dp</item>
+        <item name="iconPadding">@dimen/icon_padding</item>
+        <item name="iconTint">@color/white</item>
+        <item name="backgroundTint">@color/new_white_transp</item>
+        <item name="android:src">@drawable/favorite</item>
     </style>
     <style name="TrackButtonPlay">
         <item name="android:layout_width">100dp</item>
@@ -96,6 +108,7 @@
         <item name="iconPadding">@dimen/icon_padding</item>
         <item name="iconTint">@color/black</item>
         <item name="backgroundTint">@color/grey</item>
+        <item name="android:src">@drawable/play</item>
     </style>
     <style name="TextPlayer">
         <item name="android:textColor">@color/black</item>

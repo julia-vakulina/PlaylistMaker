@@ -1,7 +1,6 @@
-package com.example.playlistmaker.player.data
+package com.example.playlistmaker.player.domain
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.player.domain.PlayerInteractor
 
 class PlayerInteractorImpl: PlayerInteractor {
     companion object {

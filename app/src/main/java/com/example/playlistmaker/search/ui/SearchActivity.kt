@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.search.domain.SearchHistoryRepositoryImpl
-import com.example.playlistmaker.search.domain.SearchViewModelFactory
 
 
 private const val HISTORY_KEY = "history"
@@ -53,8 +52,8 @@ class SearchActivity : AppCompatActivity() {
         val clearHistory = findViewById<Button>(R.id.clearHistory)
          searchHistoryLayout = findViewById<LinearLayout>(R.id.searchHistory)
         val searchHistoryView = findViewById<RecyclerView>(R.id.searchHistoryView)
-        val historyPrefs = searchHistoryRepository.getSearchHistory()
-        searchHistory = SearchHistory(historyPrefs)
+        //val historyPrefs = searchHistoryRepository.getSearchHistory()
+        //searchHistory = SearchHistory(historyPrefs)
         searchHistory.getTracks()
 
         searchHistoryView.adapter = TrackAdapter(searchHistory.historyList, historyPrefs)
@@ -154,10 +153,12 @@ class SearchActivity : AppCompatActivity() {
                 //searchDebounce()
                 viewModel.searchDebounce(searchRunnable)
                 clearButton.visibility = clearButtonVisibility(s)
-                if (editTextSearch.hasFocus() && s?.isEmpty() == false) searchHistoryLayout.visibility = View.GONE
-                else {
+                if (editTextSearch.hasFocus() && s?.isEmpty() == false) {
+                    searchHistoryLayout.visibility = View.GONE
+                } else {
                     searchHistoryLayout.visibility = View.VISIBLE
                 }
+                if (start == 0) viewModel.clearSearchHistory(false)
             }
             override fun afterTextChanged(s: Editable?) {
                 searchText = s.toString()

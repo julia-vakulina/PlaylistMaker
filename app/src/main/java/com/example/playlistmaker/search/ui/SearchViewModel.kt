@@ -6,9 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.player.domain.TrackFromAPI
+import com.example.playlistmaker.search.domain.HistoryInteractor
 import com.example.playlistmaker.search.domain.TrackInteractor
 
-class SearchViewModel(private val getTrackInteractor: TrackInteractor) : ViewModel() {
+class SearchViewModel(private val getTrackInteractor: TrackInteractor,
+    private val historyInteractor: HistoryInteractor) : ViewModel() {
     private var loadingLiveData = MutableLiveData(false)
     private var placeholderLiveData = MutableLiveData("")
     private var tracksLiveData = MutableLiveData(ArrayList<TrackFromAPI>())
@@ -20,6 +22,12 @@ class SearchViewModel(private val getTrackInteractor: TrackInteractor) : ViewMod
 
     private val handler = Handler(Looper.getMainLooper())
     val tracks = ArrayList<TrackFromAPI>()
+    fun getHistory() {
+        historyInteractor.getAllHistory()
+    }
+    fun putToHistory(trackFromAPI: TrackFromAPI) {
+        historyInteractor.putToHistory(trackFromAPI = trackFromAPI)
+    }
 
     fun searchTrack(text: String) {
         loadingLiveData.postValue(true)

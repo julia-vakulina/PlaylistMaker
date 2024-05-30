@@ -2,17 +2,16 @@ package com.example.playlistmaker.creator
 
 import android.app.Application
 import android.content.Context
-import com.example.playlistmaker.player.data.PlayerInteractorImpl
-import com.example.playlistmaker.player.domain.PlayerInteractor
+import com.example.playlistmaker.player.domain.PlayerInteractorImpl
 import com.example.playlistmaker.search.data.RetrofitNetworkClient
 import com.example.playlistmaker.search.data.TrackRepositoryImpl
 import com.example.playlistmaker.search.domain.TrackInteractor
-import com.example.playlistmaker.search.data.TrackInteractorImpl
+import com.example.playlistmaker.search.domain.TrackInteractorImpl
 import com.example.playlistmaker.search.domain.TrackRepository
 import com.example.playlistmaker.settings.data.ExternalNavigator
 import com.example.playlistmaker.settings.data.NavigatorRepositoryImpl
 import com.example.playlistmaker.settings.data.SettingsRepositoryImpl
-import com.example.playlistmaker.settings.domain.App
+import com.example.playlistmaker.App
 import com.example.playlistmaker.settings.domain.NavigatorRepository
 import com.example.playlistmaker.settings.domain.SettingsInteractor
 import com.example.playlistmaker.settings.domain.SettingsRepository

@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.player.data.PlayerInteractorImpl
+import com.example.playlistmaker.player.domain.PlayerInteractorImpl
 import com.example.playlistmaker.player.domain.PlayerInteractor
 
 class PlayerViewModel(

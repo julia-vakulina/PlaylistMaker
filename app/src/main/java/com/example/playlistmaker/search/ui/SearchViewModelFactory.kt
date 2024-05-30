@@ -1,10 +1,9 @@
-package com.example.playlistmaker.search.domain
+package com.example.playlistmaker.search.ui
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.search.ui.SearchViewModel
 
 class SearchViewModelFactory(context: Context) : ViewModelProvider.Factory {
     private val trackInteractor = Creator.provideTrackInteractor(context)

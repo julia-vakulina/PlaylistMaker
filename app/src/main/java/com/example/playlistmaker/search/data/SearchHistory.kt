@@ -1,6 +1,7 @@
 package com.example.playlistmaker.search.data
 
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.playlistmaker.player.domain.TrackFromAPI
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -15,9 +16,11 @@ class SearchHistory (private val sharedPreferences: SharedPreferences) {
         sharedPreferences.edit().clear().apply()
         historyList = mutableListOf<TrackFromAPI>()
     }
-    fun getTracks() {
+    fun getTracks(): List<TrackFromAPI> {
         val s = sharedPreferences.getString(HISTORY_KEY, null)
         historyList = listFromJson(s)
+        //Log.e("AAA", historyList.toString())
+        return historyList
     }
     fun putTracks(){
         val s = jsonFromList(historyList)

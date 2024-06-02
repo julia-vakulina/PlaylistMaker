@@ -8,9 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
-import com.example.playlistmaker.search.data.TrackGetterImpl
-import com.example.playlistmaker.search.domain.TrackGetter
+import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.player.domain.TrackFromAPI
+import com.example.playlistmaker.search.data.JsonParserImpl
+import com.example.playlistmaker.search.domain.JsonParser
 import com.example.playlistmaker.search.ui.INTENT_KEY
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -19,6 +22,8 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var play: ImageView
     private lateinit var viewModel: PlayerViewModel
     private lateinit var trackTime: TextView
+    //val jsonParser : JsonParser = JsonParserImpl(Gson())
+    val jsonParser: JsonParser = Creator.provideJsonParser()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track)
@@ -33,8 +38,15 @@ class PlayerActivity : AppCompatActivity() {
         val trackGenre = findViewById<TextView>(R.id.genre)
         val trackCountry = findViewById<TextView>(R.id.country)
 
-        val trackGetter: TrackGetter = TrackGetterImpl()
-        val track = trackGetter.getTrack(INTENT_KEY,intent)
+        //val trackGetter: TrackGetter = TrackGetterImpl()
+        //val track = trackGetter.getTrack(INTENT_KEY,intent)
+
+        //val gson = Gson()
+        val json = intent.getStringExtra(INTENT_KEY)
+        val track = jsonParser.jsonToObject(json.toString(), TrackFromAPI::class.java)
+
+
+
         Glide.with(this).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")).
         placeholder(R.drawable.snake).into(trackImage)
         trackName.text = track.trackName

@@ -14,16 +14,20 @@ class SearchViewModel(private val getTrackInteractor: TrackInteractor,
     private var loadingLiveData = MutableLiveData(false)
     private var placeholderLiveData = MutableLiveData("")
     private var tracksLiveData = MutableLiveData(ArrayList<TrackFromAPI>())
+    private var tracksHistoryLiveData = MutableLiveData(ArrayList<TrackFromAPI>())
     private var searchHistoryLiveData = MutableLiveData(false)
     fun getLoadingLiveData(): LiveData<Boolean> = loadingLiveData
     fun getPlaceholderLiveData(): LiveData<String> = placeholderLiveData
     fun getTracksLiveData(): LiveData<ArrayList<TrackFromAPI>> = tracksLiveData
+    fun getTracksHistoryLiveData() : LiveData<ArrayList<TrackFromAPI>> = tracksHistoryLiveData
     fun getSearchHistoryLiveData(): LiveData<Boolean> = searchHistoryLiveData
 
     private val handler = Handler(Looper.getMainLooper())
     val tracks = ArrayList<TrackFromAPI>()
+    var historyTracks = ArrayList<TrackFromAPI>()
     fun getHistory() {
-        historyInteractor.getAllHistory()
+        historyTracks = historyInteractor.getAllHistory() as ArrayList<TrackFromAPI>
+        resetHistory()
     }
     fun putToHistory(trackFromAPI: TrackFromAPI) {
         historyInteractor.putToHistory(trackFromAPI = trackFromAPI)
@@ -53,12 +57,18 @@ class SearchViewModel(private val getTrackInteractor: TrackInteractor,
             })
         }
     }
-
+    fun resetHistory() {
+        tracksHistoryLiveData.postValue(historyTracks)
+    }
+    fun searchHistoryVisible(visible: Boolean) {
+        searchHistoryLiveData.postValue(visible)
+    }
     fun clear() {
         tracksLiveData.postValue(ArrayList<TrackFromAPI>())
     }
-    fun clearSearchHistory(visible: Boolean) {
-        searchHistoryLiveData.postValue(visible)
+    fun clearHistory() {
+        historyTracks = ArrayList<TrackFromAPI>()
+        historyInteractor.clearHistory()
     }
     fun searchDebounce(searchRunnable: Runnable) {
         handler.removeCallbacks(searchRunnable)

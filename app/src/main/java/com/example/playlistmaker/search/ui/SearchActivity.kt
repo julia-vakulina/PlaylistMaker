@@ -27,6 +27,7 @@ import com.example.playlistmaker.player.ui.PlayerActivity
 import com.example.playlistmaker.search.data.SearchHistory
 import com.example.playlistmaker.search.domain.SearchHistoryRepositoryImpl
 import com.google.gson.Gson
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 private const val HISTORY_KEY = "history"
@@ -34,14 +35,12 @@ const val INTENT_KEY = "key"
 
 class SearchActivity : AppCompatActivity() {
 
-   //private val searchHistoryRepository by lazy {
-   //     SearchHistoryRepositoryImpl(this)
-   // }
-    private lateinit var viewModel: SearchViewModel
+    //private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModel<SearchViewModel>()
     private lateinit var editTextSearch: EditText
     private var searchText :String = ""
     //private lateinit var searchHistory: SearchHistory
-    private val handler = Handler(Looper.getMainLooper())
+    //private val handler = Handler(Looper.getMainLooper())
     private lateinit var progressBar : ProgressBar
     private lateinit var placeHolderNotFound: LinearLayout
     private lateinit var placeHolderNoConnect: LinearLayout
@@ -69,7 +68,9 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        viewModel = ViewModelProvider(this, SearchViewModelFactory(this))[SearchViewModel::class.java]
+        //viewModel = ViewModelProvider(this, SearchViewModelFactory(this))[SearchViewModel::class.java]
+        //viewModel
+
 
         progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val clearHistory = findViewById<Button>(R.id.clearHistory)

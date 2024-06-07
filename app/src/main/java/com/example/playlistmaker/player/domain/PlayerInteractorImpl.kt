@@ -2,7 +2,7 @@ package com.example.playlistmaker.player.domain
 
 import android.media.MediaPlayer
 
-class PlayerInteractorImpl: PlayerInteractor {
+class PlayerInteractorImpl(private val player: MediaPlayer): PlayerInteractor {
     companion object {
          const val STATE_DEFAULT = 0
          const val STATE_PREPARED = 1
@@ -14,7 +14,7 @@ class PlayerInteractorImpl: PlayerInteractor {
     override var url: String? = null
 
 
-    private val player = MediaPlayer()
+    //private val player = MediaPlayer()
     override var playerState = STATE_DEFAULT
 
     //override fun preparePlayer(callback: () -> Unit) {

@@ -15,18 +15,18 @@ import com.example.playlistmaker.player.domain.PlayerInteractor
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor
 ) : ViewModel() {
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
+    //companion object {
+     //   fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+     //       initializer {
 
-                PlayerViewModel(
-                    playerInteractor = Creator.providePlayerInteractor()
-                )
-            }
-        }
-        var isPrepared = false
+      //          PlayerViewModel(
+      //              playerInteractor = Creator.providePlayerInteractor()
+       //         )
+       //     }
+       // }
+       // var isPrepared = false
 
-    }
+    //}
 
 
 
@@ -52,7 +52,7 @@ class PlayerViewModel(
     }
 
     fun preparePlayer(url: String) {
-        if (!isPrepared) {
+        //if (!isPrepared) {
             playerInteractor.preparePlayer(url,
                 onPrepared = {
                 renderState(PlayerState.Prepared)
@@ -60,8 +60,8 @@ class PlayerViewModel(
                 renderState(PlayerState.Prepared)
                 }
             )
-            isPrepared = true
-        }
+            //isPrepared = true
+        //}
     }
     fun renderState(playerState: PlayerState) {
         playerStateLiveData.postValue(playerState)

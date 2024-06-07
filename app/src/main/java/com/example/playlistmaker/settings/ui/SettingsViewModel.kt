@@ -17,19 +17,19 @@ class SettingsViewModel(
     private val settingsInteractor: SettingsInteractor
 ) : AndroidViewModel(application) {
 
-    companion object {
+    //companion object {
 
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
+     //   fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
+     //       initializer {
 
-                SettingsViewModel(
-                    application = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application,
-                    sharingInteractor = Creator.provideSharingInteractor(),
-                    settingsInteractor =  Creator.provideSettingsInteractor()
-                )
-            }
-        }
-    }
+      //          SettingsViewModel(
+      //              application = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application,
+      //              sharingInteractor = Creator.provideSharingInteractor(),
+      //              settingsInteractor =  Creator.provideSettingsInteractor()
+      //          )
+      //      }
+      //  }
+    //}
 
     private var isNightModeOnMutableLiveData = MutableLiveData<Boolean>()
     val isNightModeOnLiveData: LiveData<Boolean> = isNightModeOnMutableLiveData

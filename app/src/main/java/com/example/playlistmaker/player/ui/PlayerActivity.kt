@@ -14,16 +14,20 @@ import com.example.playlistmaker.search.data.JsonParserImpl
 import com.example.playlistmaker.search.domain.JsonParser
 import com.example.playlistmaker.search.ui.INTENT_KEY
 import com.google.gson.Gson
+import org.koin.android.ext.android.inject
 import java.text.SimpleDateFormat
 import java.util.Locale
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var play: ImageView
-    private lateinit var viewModel: PlayerViewModel
+    //private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel()
     private lateinit var trackTime: TextView
     //val jsonParser : JsonParser = JsonParserImpl(Gson())
-    val jsonParser: JsonParser = Creator.provideJsonParser()
+    //val jsonParser: JsonParser = Creator.provideJsonParser()
+    val jsonParser: JsonParser by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track)
@@ -59,7 +63,7 @@ class PlayerActivity : AppCompatActivity() {
 
         play = findViewById(R.id.button_play_track)
         play.isEnabled = false
-        viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory())[PlayerViewModel::class.java]
+        //viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory())[PlayerViewModel::class.java]
         viewModel.getTimerLiveData().observe(this) {
             trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(it)
         }

@@ -13,22 +13,8 @@ class PlayerInteractorImpl(private val player: MediaPlayer): PlayerInteractor {
 
     override var url: String? = null
 
-
-    //private val player = MediaPlayer()
     override var playerState = STATE_DEFAULT
 
-    //override fun preparePlayer(callback: () -> Unit) {
-    //    player.setDataSource(url)
-    //    player.prepareAsync()
-    //    player.setOnPreparedListener {
-    //        //playerState = STATE_PREPARED
-    //    }
-    //    player.setOnCompletionListener {
-    //        player.seekTo(0)
-    //playerState = STATE_PREPARED
-    //        callback()
-    //    }
-    //}
     override fun isPlaying(): Boolean = player.isPlaying
 
 
@@ -51,13 +37,11 @@ class PlayerInteractorImpl(private val player: MediaPlayer): PlayerInteractor {
     override fun startPlayer() {
         player.start()
         playerState = STATE_PLAYING
-        //callback()
     }
 
     override fun pausePlayer() {
         player.pause()
         playerState = STATE_PAUSED
-        //callback()
     }
 
     override fun playbackControl() {

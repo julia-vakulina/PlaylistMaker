@@ -35,12 +35,9 @@ const val INTENT_KEY = "key"
 
 class SearchActivity : AppCompatActivity() {
 
-    //private lateinit var viewModel: SearchViewModel
     private val viewModel: SearchViewModel by viewModel<SearchViewModel>()
     private lateinit var editTextSearch: EditText
     private var searchText :String = ""
-    //private lateinit var searchHistory: SearchHistory
-    //private val handler = Handler(Looper.getMainLooper())
     private lateinit var progressBar : ProgressBar
     private lateinit var placeHolderNotFound: LinearLayout
     private lateinit var placeHolderNoConnect: LinearLayout
@@ -68,18 +65,10 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        //viewModel = ViewModelProvider(this, SearchViewModelFactory(this))[SearchViewModel::class.java]
-        //viewModel
-
-
         progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val clearHistory = findViewById<Button>(R.id.clearHistory)
          searchHistoryLayout = findViewById<LinearLayout>(R.id.searchHistory)
         val searchHistoryView = findViewById<RecyclerView>(R.id.searchHistoryView)
-        //val historyPrefs = searchHistoryRepository.getSearchHistory()
-        //searchHistory = SearchHistory(historyPrefs)
-
-        //searchHistory.getTracks()
         viewModel.getHistory()
 
         searchHistoryView.layoutManager = LinearLayoutManager(this)
@@ -89,9 +78,6 @@ class SearchActivity : AppCompatActivity() {
         adapterHistory.notifyDataSetChanged()
 
         clearHistory.setOnClickListener {
-            //changeSearchHistoryVisibility(false)
-            //searchHistory.clear()
-            //viewModel.clearSearchHistory(false)
             viewModel.clearHistory()
             searchHistoryLayout.visibility = View.GONE
         }
@@ -143,10 +129,6 @@ class SearchActivity : AppCompatActivity() {
         }
         //14
         val searchRunnable = Runnable { searchTrack(editTextSearch.text.toString()) }
-        //fun searchDebounce(searchRunnable: Runnable) {
-        //    handler.removeCallbacks(searchRunnable)
-        //    handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-        //}
 
         editTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {

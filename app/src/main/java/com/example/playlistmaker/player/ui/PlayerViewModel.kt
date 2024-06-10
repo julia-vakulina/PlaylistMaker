@@ -5,29 +5,12 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.player.domain.PlayerInteractorImpl
 import com.example.playlistmaker.player.domain.PlayerInteractor
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor
 ) : ViewModel() {
-    //companion object {
-     //   fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-     //       initializer {
-
-      //          PlayerViewModel(
-      //              playerInteractor = Creator.providePlayerInteractor()
-       //         )
-       //     }
-       // }
-       // var isPrepared = false
-
-    //}
-
 
 
     private var timerLiveData = MutableLiveData(0)
@@ -52,7 +35,6 @@ class PlayerViewModel(
     }
 
     fun preparePlayer(url: String) {
-        //if (!isPrepared) {
             playerInteractor.preparePlayer(url,
                 onPrepared = {
                 renderState(PlayerState.Prepared)
@@ -60,8 +42,6 @@ class PlayerViewModel(
                 renderState(PlayerState.Prepared)
                 }
             )
-            //isPrepared = true
-        //}
     }
     fun renderState(playerState: PlayerState) {
         playerStateLiveData.postValue(playerState)

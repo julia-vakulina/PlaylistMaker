@@ -5,15 +5,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.player.domain.TrackFromAPI
-import com.example.playlistmaker.search.data.JsonParserImpl
 import com.example.playlistmaker.search.domain.JsonParser
 import com.example.playlistmaker.search.ui.INTENT_KEY
-import com.google.gson.Gson
 import org.koin.android.ext.android.inject
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -22,11 +18,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var play: ImageView
-    //private lateinit var viewModel: PlayerViewModel
     private val viewModel: PlayerViewModel by viewModel()
     private lateinit var trackTime: TextView
-    //val jsonParser : JsonParser = JsonParserImpl(Gson())
-    //val jsonParser: JsonParser = Creator.provideJsonParser()
     val jsonParser: JsonParser by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +35,6 @@ class PlayerActivity : AppCompatActivity() {
         val trackGenre = findViewById<TextView>(R.id.genre)
         val trackCountry = findViewById<TextView>(R.id.country)
 
-        //val trackGetter: TrackGetter = TrackGetterImpl()
-        //val track = trackGetter.getTrack(INTENT_KEY,intent)
-
-        //val gson = Gson()
         val json = intent.getStringExtra(INTENT_KEY)
         val track = jsonParser.jsonToObject(json.toString(), TrackFromAPI::class.java)
 
@@ -63,7 +52,6 @@ class PlayerActivity : AppCompatActivity() {
 
         play = findViewById(R.id.button_play_track)
         play.isEnabled = false
-        //viewModel = ViewModelProvider(this, PlayerViewModel.getViewModelFactory())[PlayerViewModel::class.java]
         viewModel.getTimerLiveData().observe(this) {
             trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(it)
         }

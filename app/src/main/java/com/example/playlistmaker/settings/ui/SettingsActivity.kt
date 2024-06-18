@@ -10,11 +10,7 @@ import com.example.playlistmaker.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-const val THEME_PREFERENCES = "theme_preferences"
-const val THEME_KEY = "key_switch"
 class SettingsActivity : AppCompatActivity() {
-    //private lateinit var viewModel: SettingsViewModel
     private val viewModel: SettingsViewModel by viewModel()
     private lateinit var themeSwitcher: SwitchCompat
     @SuppressLint("MissingInflatedId")
@@ -22,10 +18,6 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        //viewModel = ViewModelProvider(
-        //    this,
-        //    SettingsViewModel.getViewModelFactory()
-        //)[SettingsViewModel::class.java]
 
         themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
 

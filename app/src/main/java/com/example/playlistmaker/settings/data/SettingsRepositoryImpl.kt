@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.settings.domain.SettingsRepository
 
 const val THEME_KEY = "key_switch"
+const val THEME_PREFERENCES = "theme_preferences"
 class SettingsRepositoryImpl (private val sharedPreferences: SharedPreferences) :
     SettingsRepository {
     override fun getThemeSettings(): Boolean {

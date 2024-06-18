@@ -8,9 +8,7 @@ import com.example.playlistmaker.search.data.SearchHistory
 
 class SearchHistoryRepositoryImpl(context: Context): SearchHistoryRepository {
     val sharedPreferences: SharedPreferences
-    //override fun getSearchHistory(): SharedPreferences {
-    //    return sharedPreferences
-    //}
+
     val history: SearchHistory
     init {
         sharedPreferences = context.getSharedPreferences(HISTORY_KEY, Context.MODE_PRIVATE)

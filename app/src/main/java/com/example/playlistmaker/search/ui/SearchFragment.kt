@@ -68,7 +68,7 @@ class SearchFragment : Fragment() {
         searchHistoryLayout = binding.searchHistory
         val searchHistoryView = binding.searchHistoryView
         viewModel.getHistory()
-
+        viewModel.searchHistoryVisible(false)
         searchHistoryView.layoutManager = LinearLayoutManager(requireContext())
         searchHistoryView.adapter = adapterHistory
 

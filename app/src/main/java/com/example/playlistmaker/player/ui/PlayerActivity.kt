@@ -79,7 +79,7 @@ class PlayerActivity : AppCompatActivity() {
 
 
 
-        viewModel.preparePlayer(url = track.previewUrl)
+        track.previewUrl?.let { viewModel.preparePlayer(url = it) }
 
         play.setOnClickListener {
             viewModel.playbackControl()

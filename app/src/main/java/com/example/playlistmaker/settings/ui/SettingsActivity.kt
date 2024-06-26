@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -16,7 +15,7 @@ class SettingsActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.fragment_settings)
 
 
         themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
@@ -28,14 +27,14 @@ class SettingsActivity : AppCompatActivity() {
             viewModel.switchTheme(checked)
         }
 
-        val buttonLeft = findViewById<Button>(R.id.button_left)
-        val buttonShare = findViewById<Button>(R.id.button_share)
-        val buttonSupport = findViewById<Button>(R.id.button_support)
-        val buttonLegal = findViewById<Button>(R.id.button_legal)
+        //val buttonLeft = findViewById<Button>(R.id.button_left)
+        val buttonShare = findViewById<Button>(R.id.buttonShare)
+        val buttonSupport = findViewById<Button>(R.id.buttonSupport)
+        val buttonLegal = findViewById<Button>(R.id.buttonLegal)
 
-        buttonLeft.setOnClickListener {
-            this.onBackPressed()
-        }
+        //buttonLeft.setOnClickListener {
+        //    this.onBackPressed()
+        //}
         buttonShare.setOnClickListener {
             viewModel.shareApp()
         }

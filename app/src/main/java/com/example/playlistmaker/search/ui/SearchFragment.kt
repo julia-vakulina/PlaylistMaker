@@ -1,13 +1,13 @@
 package com.example.playlistmaker.search.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -15,20 +15,18 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.TrackFromAPI
 import com.example.playlistmaker.player.ui.PlayerActivity
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
-private const val HISTORY_KEY = "history"
-const val INTENT_KEY = "key"
-
-class SearchActivity : AppCompatActivity() {
-
+class SearchFragment : Fragment() {
+    private lateinit var binding: FragmentSearchBinding
     private val viewModel: SearchViewModel by viewModel<SearchViewModel>()
     private lateinit var editTextSearch: EditText
     private var searchText :String = ""
@@ -53,19 +51,25 @@ class SearchActivity : AppCompatActivity() {
             }
         }
     )
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-    @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_search)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        val clearHistory = findViewById<Button>(R.id.clearHistory)
-         searchHistoryLayout = findViewById<LinearLayout>(R.id.searchHistory)
-        val searchHistoryView = findViewById<RecyclerView>(R.id.searchHistoryView)
+        progressBar = binding.progressBar
+        val clearHistory = binding.clearHistory
+        searchHistoryLayout = binding.searchHistory
+        val searchHistoryView = binding.searchHistoryView
         viewModel.getHistory()
-
-        searchHistoryView.layoutManager = LinearLayoutManager(this)
+        viewModel.searchHistoryVisible(false)
+        searchHistoryView.layoutManager = LinearLayoutManager(requireContext())
         searchHistoryView.adapter = adapterHistory
 
         adapterHistory.setTracks(viewModel.historyTracks)
@@ -76,11 +80,11 @@ class SearchActivity : AppCompatActivity() {
             searchHistoryLayout.visibility = View.GONE
         }
 
-        val trackView = findViewById<RecyclerView>(R.id.trackView)
-        trackView.layoutManager = LinearLayoutManager(this)
+        val trackView = binding.trackView
+        trackView.layoutManager = LinearLayoutManager(requireContext())
         trackView.adapter = adapter
 
-        editTextSearch = findViewById(R.id.editTextSearch)
+        editTextSearch = binding.editTextSearch
         editTextSearch.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus && editTextSearch.text.isEmpty() && viewModel.historyTracks.size!=0) {
                 searchHistoryLayout.visibility = View.VISIBLE
@@ -88,40 +92,39 @@ class SearchActivity : AppCompatActivity() {
                 searchHistoryLayout.visibility = View.GONE
             }
         }
-        placeHolderNotFound = findViewById<LinearLayout>(R.id.placeHolderNotFound)
-        placeHolderNoConnect = findViewById<LinearLayout>(R.id.placeHolderNoConnect)
+        placeHolderNotFound = binding.placeHolderNotFound
+        placeHolderNoConnect = binding.placeHolderNoConnect
 
-        viewModel.getLoadingLiveData().observe(this) {isLoading ->
+        viewModel.getLoadingLiveData().observe(viewLifecycleOwner) {isLoading ->
             changeProgressBarVisibility(isLoading)
         }
-        viewModel.getPlaceholderLiveData().observe(this) {errorMessage ->
+        viewModel.getPlaceholderLiveData().observe(viewLifecycleOwner) {errorMessage ->
             changePlaceholderVisibility(errorMessage)
         }
-        viewModel.getTracksLiveData().observe(this) {tracks ->
+        viewModel.getTracksLiveData().observe(viewLifecycleOwner) {tracks ->
             placeHolderNotFound.visibility = View.GONE
             placeHolderNoConnect.visibility = View.GONE
-            //trackView.adapter = adapter
             adapter.setTracks(tracks)
             adapter.notifyDataSetChanged()
         }
-        viewModel.getTracksHistoryLiveData().observe(this) { _ ->
+        viewModel.getTracksHistoryLiveData().observe(viewLifecycleOwner) { _ ->
             adapterHistory.setTracks(viewModel.historyTracks)
             adapterHistory.notifyDataSetChanged()
         }
-        viewModel.getSearchHistoryLiveData().observe(this) {isVisible ->
+        viewModel.getSearchHistoryLiveData().observe(viewLifecycleOwner) {isVisible ->
             changeSearchHistoryVisibility(isVisible)
         }
 
 
 
-        val buttonUpdate = findViewById<Button>(R.id.buttonUpdate)
+        val buttonUpdate = binding.buttonUpdate
         fun searchTrack(text: String) {
             if (text.isNotEmpty()) {
                 viewModel.searchTrack(text)
 
             }
         }
-        //14
+
         val searchRunnable = Runnable { searchTrack(editTextSearch.text.toString()) }
 
         editTextSearch.setOnEditorActionListener { _, actionId, _ ->
@@ -138,27 +141,20 @@ class SearchActivity : AppCompatActivity() {
             placeHolderNotFound.visibility = View.GONE
         }
 
-        //val buttonLeft = findViewById<Button>(R.id.button_left_search)
-        //buttonLeft.setOnClickListener {
-        //    this.onBackPressed()
-        //}
-
-        val clearButton = findViewById<ImageView>(R.id.clearIcon)
+        val clearButton = binding.clearIcon
         clearButton.setOnClickListener {
             viewModel.getHistory()
             if (viewModel.historyTracks.size!=0) viewModel.searchHistoryVisible(true)
             else viewModel.searchHistoryVisible(false)
             viewModel.clear()
             editTextSearch.setText("")
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            inputMethodManager?.hideSoftInputFromWindow(editTextSearch.windowToken, 0)
-            //trackView.adapter = TrackAdapter(listOf(), this)
+            //val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            //inputMethodManager?.hideSoftInputFromWindow(editTextSearch.windowToken, 0)
             adapter.setTracks(ArrayList())
             adapter.notifyDataSetChanged()
             placeHolderNoConnect.visibility = View.GONE
             placeHolderNotFound.visibility = View.GONE
             viewModel.getHistory()
-            //searchHistoryView.adapter = TrackAdapter(viewModel.historyTracks, this)
             adapterHistory.setTracks(viewModel.historyTracks)
             adapterHistory.notifyDataSetChanged()
         }
@@ -167,7 +163,6 @@ class SearchActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                //searchDebounce()
 
                 viewModel.searchDebounce(searchRunnable)
                 clearButton.visibility = clearButtonVisibility(s)
@@ -184,7 +179,6 @@ class SearchActivity : AppCompatActivity() {
         }
         editTextSearch.addTextChangedListener(simpleTextWatcher)
 
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -192,9 +186,9 @@ class SearchActivity : AppCompatActivity() {
         outState.putString(SEARCH_TEXT_KEY, searchText)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val newSearchText = savedInstanceState.getString(SEARCH_TEXT_KEY, searchText)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        val newSearchText = savedInstanceState?.getString(SEARCH_TEXT_KEY, searchText)
         editTextSearch.setText(newSearchText)
     }
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -206,7 +200,7 @@ class SearchActivity : AppCompatActivity() {
     }
     private fun changeProgressBarVisibility(visible: Boolean) {
         if (visible == true) {progressBar.visibility = View.VISIBLE}
-            else {progressBar.visibility = View.GONE}
+        else {progressBar.visibility = View.GONE}
     }
     private fun changePlaceholderVisibility(errorMessage: String) {
         if (errorMessage.equals("no internet")) {
@@ -225,7 +219,7 @@ class SearchActivity : AppCompatActivity() {
         else {searchHistoryLayout.visibility = View.GONE}
     }
     fun openPlayer(trackFromAPI: TrackFromAPI) {
-        val playerIntent = Intent(this, PlayerActivity::class.java)
+        val playerIntent = Intent(requireContext(), PlayerActivity::class.java)
         val gson = Gson()
         val json = gson.toJson(trackFromAPI)
         startActivity(playerIntent.putExtra(INTENT_KEY, json))
@@ -234,7 +228,5 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         private const val SEARCH_TEXT_KEY = "search_text_key"
     }
-
-
 
 }

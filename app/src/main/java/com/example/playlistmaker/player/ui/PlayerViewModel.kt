@@ -1,39 +1,33 @@
 package com.example.playlistmaker.player.ui
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.player.domain.PlayerInteractorImpl
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.PlayerInteractor
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor
 ) : ViewModel() {
 
-
     private var timerLiveData = MutableLiveData(0)
     private var playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.Default)
-
+    private var timerJob: Job? = null
 
     fun getTimerLiveData() : LiveData<Int> = timerLiveData
     fun getPlayerStateLiveData() : LiveData<PlayerState> = playerStateLiveData
-    private val mainThreadHandler = Handler(Looper.getMainLooper())
     fun startTimer() {
-        mainThreadHandler.post(updateTimer())
-
-    }
-    private fun updateTimer(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                playerStateLiveData.postValue(PlayerState.Playing(playerInteractor.getCurrentPosition().toLong()))
-                    timerLiveData.postValue(playerInteractor.getCurrentPosition())
-                    mainThreadHandler.postDelayed(this, PlayerInteractorImpl.DELAY)
+        timerJob?.cancel()
+        timerJob = viewModelScope.launch {
+            while (playerInteractor.isPlaying()) {
+                delay(PROGRESS_DELAY)
+                timerLiveData.postValue(playerInteractor.getCurrentPosition())
             }
         }
     }
-
     fun preparePlayer(url: String) {
             playerInteractor.preparePlayer(url,
                 onPrepared = {
@@ -61,5 +55,8 @@ class PlayerViewModel(
         super.onCleared()
         playerInteractor.reset()
         playerStateLiveData.postValue(PlayerState.Default)
+    }
+    companion object {
+        const val PROGRESS_DELAY = 300L
     }
 }

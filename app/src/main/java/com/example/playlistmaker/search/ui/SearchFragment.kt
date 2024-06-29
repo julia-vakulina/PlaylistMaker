@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -9,16 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.TrackFromAPI
 import com.example.playlistmaker.player.ui.PlayerActivity
@@ -125,7 +119,7 @@ class SearchFragment : Fragment() {
             }
         }
 
-        val searchRunnable = Runnable { searchTrack(editTextSearch.text.toString()) }
+        //val searchRunnable = Runnable { searchTrack(editTextSearch.text.toString()) }
 
         editTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -164,7 +158,7 @@ class SearchFragment : Fragment() {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
-                viewModel.searchDebounce(searchRunnable)
+                if (!s.toString().isEmpty()) viewModel.searchDebounce(s.toString())
                 clearButton.visibility = clearButtonVisibility(s)
                 if (editTextSearch.hasFocus() && s?.isEmpty() == false) {
                     searchHistoryLayout.visibility = View.GONE

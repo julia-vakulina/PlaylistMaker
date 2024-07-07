@@ -10,9 +10,7 @@ class TrackAdapter(
     private val clickListener: TrackClickListener
 ) : RecyclerView.Adapter<TrackViewHolder> () {
 
-    //14
     private var tracks = ArrayList<TrackFromAPI>()
-    // создать метод для установки треков setTracks(ArrayList)
     fun setTracks(trackList: ArrayList<TrackFromAPI>){
         tracks = trackList
     }

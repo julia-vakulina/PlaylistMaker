@@ -8,7 +8,6 @@ class PlayerInteractorImpl(private val player: MediaPlayer): PlayerInteractor {
          const val STATE_PREPARED = 1
         const val STATE_PLAYING = 2
          const val STATE_PAUSED = 3
-        const val DELAY = 500L
     }
 
     override var url: String? = null
@@ -27,8 +26,8 @@ class PlayerInteractorImpl(private val player: MediaPlayer): PlayerInteractor {
                 playerState= STATE_PREPARED
             }
             setOnCompletionListener {
-                seekTo(0)
                 onCompletion.invoke()
+                seekTo(0)
                 playerState= STATE_PREPARED
             }
         }

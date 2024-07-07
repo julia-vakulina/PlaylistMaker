@@ -169,7 +169,7 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 //searchDebounce()
 
-                viewModel.searchDebounce(searchRunnable)
+                viewModel.searchDebounce(s.toString())
                 clearButton.visibility = clearButtonVisibility(s)
                 if (editTextSearch.hasFocus() && s?.isEmpty() == false) {
                     searchHistoryLayout.visibility = View.GONE

@@ -2,12 +2,17 @@ package com.example.playlistmaker.search.ui
 
 import android.os.Handler
 import android.os.Looper
+import android.os.Message
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.player.domain.TrackFromAPI
 import com.example.playlistmaker.search.domain.HistoryInteractor
 import com.example.playlistmaker.search.domain.TrackInteractor
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(private val getTrackInteractor: TrackInteractor,
     private val historyInteractor: HistoryInteractor) : ViewModel() {
@@ -22,8 +27,9 @@ class SearchViewModel(private val getTrackInteractor: TrackInteractor,
     fun getTracksHistoryLiveData() : LiveData<ArrayList<TrackFromAPI>> = tracksHistoryLiveData
     fun getSearchHistoryLiveData(): LiveData<Boolean> = searchHistoryLiveData
 
-    private val handler = Handler(Looper.getMainLooper())
-    val tracks = ArrayList<TrackFromAPI>()
+    //private val handler = Handler(Looper.getMainLooper())
+    private var searchJob: Job? = null
+    //val tracks = ArrayList<TrackFromAPI>()
     var historyTracks = ArrayList<TrackFromAPI>()
     fun getHistory() {
         historyTracks = historyInteractor.getAllHistory() as ArrayList<TrackFromAPI>
@@ -36,25 +42,48 @@ class SearchViewModel(private val getTrackInteractor: TrackInteractor,
     fun searchTrack(text: String) {
         loadingLiveData.postValue(true)
         if (text.isNotEmpty()) {
-            getTrackInteractor.searchTrack(text, object: TrackInteractor.TrackConsumer {
-                override fun consume(foundTracks: List<TrackFromAPI>?, errorMessage: String?) {
-                    handler.post {
-                        loadingLiveData.postValue(false)
-                        if (foundTracks != null) {
-                            tracks.clear()
-                            tracks.addAll(foundTracks)
-                            tracksLiveData.postValue(foundTracks as ArrayList<TrackFromAPI>?)
-                        }
-                        if (tracks.isEmpty()) {
-                            if (errorMessage.equals( "no internet")) {
-                                placeholderLiveData.postValue("no internet")
-                            } else {
-                                placeholderLiveData.postValue("not found")
-                            }
-                            }
+            //getTrackInteractor.searchTrack(text, object: TrackInteractor.TrackConsumer {
+            //    override fun consume(foundTracks: List<TrackFromAPI>?, errorMessage: String?) {
+            //        handler.post {
+            //            loadingLiveData.postValue(false)
+            //            if (foundTracks != null) {
+            //                tracks.clear()
+            //                tracks.addAll(foundTracks)
+            //                tracksLiveData.postValue(foundTracks as ArrayList<TrackFromAPI>?)
+            //            }
+            //            if (tracks.isEmpty()) {
+            //                if (errorMessage.equals( "no internet")) {
+            //                    placeholderLiveData.postValue("no internet")
+            //                } else {
+            //                    placeholderLiveData.postValue("not found")
+            //                }
+            //                }
+            //        }
+            //    }
+            //})
+
+            viewModelScope.launch {
+                getTrackInteractor
+                    .searchTrack(text)
+                    .collect { pair ->
+                        processResult(pair.first, pair.second)
                     }
-                }
-            })
+            }
+        }
+    }
+    private fun processResult(foundTracks: List<TrackFromAPI>?, errorMessage: String?) {
+        loadingLiveData.postValue(false)
+        val tracks = mutableListOf<TrackFromAPI>()
+        if (foundTracks != null) {
+            tracks.addAll(foundTracks)
+            tracksLiveData.postValue(foundTracks as ArrayList<TrackFromAPI>?)
+        }
+        if (tracks.isEmpty()){
+            if (errorMessage.equals("no internet")) {
+                placeholderLiveData.postValue("no internet")
+            } else {
+                placeholderLiveData.postValue("not found")
+            }
         }
     }
     fun resetHistory() {
@@ -70,9 +99,14 @@ class SearchViewModel(private val getTrackInteractor: TrackInteractor,
         historyTracks = ArrayList<TrackFromAPI>()
         historyInteractor.clearHistory()
     }
-    fun searchDebounce(searchRunnable: Runnable) {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    fun searchDebounce(text: String) {
+        //handler.removeCallbacks(searchRunnable)
+        //handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchTrack(text)
+        }
     }
 
     companion object {

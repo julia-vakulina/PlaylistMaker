@@ -1,6 +1,7 @@
 package com.example.playlistmaker.search.data
 
 data class TrackDto (
+    val id: Long,
     val trackName: String ,// Название трека
     val artistName: String , // Имя исполнителя
     val trackTimeMillis: Int , // Продолжительность трека в мс

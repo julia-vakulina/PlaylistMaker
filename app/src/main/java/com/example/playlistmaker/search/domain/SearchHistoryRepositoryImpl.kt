@@ -2,11 +2,13 @@ package com.example.playlistmaker.search.domain
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.playlistmaker.db.AppDatabase
 import com.example.playlistmaker.player.domain.TrackFromAPI
 import com.example.playlistmaker.search.data.SearchHistory
 
 
-class SearchHistoryRepositoryImpl(context: Context): SearchHistoryRepository {
+class SearchHistoryRepositoryImpl(context: Context,
+                                  private val appDatabase: AppDatabase): SearchHistoryRepository {
     val sharedPreferences: SharedPreferences
 
     val history: SearchHistory
@@ -15,6 +17,12 @@ class SearchHistoryRepositoryImpl(context: Context): SearchHistoryRepository {
         history = SearchHistory(sharedPreferences)
     }
     override fun getHistory(): List<TrackFromAPI> {
+        //val favoriteTracksIds = appDatabase.trackDao().getIdTracks()
+        //history.getTracks().forEach {
+        //    if (it.id in favoriteTracksIds) {
+        //        it.isFavorite = true
+        //    }
+        //}
         return history.getTracks()
     }
 

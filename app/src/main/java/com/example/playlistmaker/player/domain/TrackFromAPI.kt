@@ -1,6 +1,7 @@
 package com.example.playlistmaker.player.domain
 
 data class TrackFromAPI(
+    val id: Long,
     val trackName: String ,// Название трека
     val artistName: String , // Имя исполнителя
     val trackTimeMillis: Int , // Продолжительность трека в мс
@@ -9,6 +10,7 @@ data class TrackFromAPI(
     val releaseDate: String, // Год релиза трека
     val primaryGenreName: String, // Жанр трека
     val country: String, // Страна исполнителя
-    val previewUrl: String?
+    val previewUrl: String?,
+    var isFavorite: Boolean = false
 )
 

@@ -1,6 +1,8 @@
 package com.example.playlistmaker
 
 import android.app.Application
+import androidx.room.Room
+import com.example.playlistmaker.db.AppDatabase
 
 import com.example.playlistmaker.di.dataModule
 import com.example.playlistmaker.di.domainModule
@@ -24,5 +26,6 @@ class App : Application() {
         val settingsInteractor: SettingsInteractor by inject()
         darkTheme = settingsInteractor.getThemeSettings()
         settingsInteractor.updateThemeSetting(darkTheme)
+
     }
 }

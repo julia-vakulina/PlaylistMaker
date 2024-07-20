@@ -14,7 +14,7 @@ interface TrackDao {
     @Delete(entity = TrackEntity::class)
     fun deleteTrack(trackEntity: TrackEntity)
 
-    @Query("SELECT * FROM track_table")
+    @Query("SELECT * FROM track_table ORDER BY timestamp DESC")
     fun getTracks(): List<TrackEntity>
 
     @Query("SELECT id FROM track_table")

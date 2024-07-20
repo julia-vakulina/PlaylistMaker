@@ -1,9 +1,6 @@
 package com.example.playlistmaker.db
 
 import com.example.playlistmaker.player.domain.TrackFromAPI
-import com.example.playlistmaker.search.data.TrackDto
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class TrackDbConvertor {
     fun map(track: TrackFromAPI) :TrackEntity{

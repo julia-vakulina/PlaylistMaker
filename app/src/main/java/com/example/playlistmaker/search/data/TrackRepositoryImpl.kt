@@ -46,7 +46,8 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient,
             }
         }
     }
-    private suspend fun markFavoriteTracks(data: List<TrackFromAPI>, favoriteTracksIds: List<Long>) {
+    private fun markFavoriteTracks(data: List<TrackFromAPI>,
+                                           favoriteTracksIds: List<Long>) {
         data.forEach {
             if (it.id in favoriteTracksIds) {
                 it.isFavorite = true

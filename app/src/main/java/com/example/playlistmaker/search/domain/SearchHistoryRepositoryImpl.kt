@@ -17,12 +17,13 @@ class SearchHistoryRepositoryImpl(context: Context,
         history = SearchHistory(sharedPreferences)
     }
     override fun getHistory(): List<TrackFromAPI> {
-        //val favoriteTracksIds = appDatabase.trackDao().getIdTracks()
-        //history.getTracks().forEach {
-        //    if (it.id in favoriteTracksIds) {
-        //        it.isFavorite = true
-        //    }
-        //}
+
+        val favoriteTracksIds = appDatabase.trackDao().getIdTracks()
+        history.getTracks().forEach {
+            if (it.id in favoriteTracksIds) {
+                it.isFavorite = true
+            }
+        }
         return history.getTracks()
     }
 

@@ -4,6 +4,7 @@ import com.example.playlistmaker.player.domain.TrackFromAPI
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+
 class FavoritesRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val trackDbConvertor: TrackDbConvertor
@@ -11,6 +12,11 @@ class FavoritesRepositoryImpl(
     override fun selectFavorites(): Flow<List<TrackFromAPI>> = flow {
         val tracks = appDatabase.trackDao().getTracks()
         emit(convertFromTrackEntity(tracks))
+    }
+
+    override fun selectFavoritesIds(): Flow<List<Long>> = flow {
+        val trackIds = appDatabase.trackDao().getIdTracks()
+        emit(trackIds)
     }
 
     override suspend fun insertTrackToFavorites(track: TrackFromAPI) {

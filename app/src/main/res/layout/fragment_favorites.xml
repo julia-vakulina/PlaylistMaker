@@ -6,6 +6,19 @@
     style="@style/SettingsLayout"
     android:orientation="vertical"
     tools:context=".media.ui.FavoritesFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/favorite_tracks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="visible">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_favorite_tracks"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/button_margin"
+            android:visibility="visible"
+            tools:visibility="visible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 <LinearLayout
     android:id="@+id/placeHolderFavorites"
     android:layout_width="wrap_content"

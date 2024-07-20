@@ -7,4 +7,16 @@ class FavoritesInteractorImpl(private val favoritesRepository: FavoritesReposito
     override fun favoriteTracks(): Flow<List<TrackFromAPI>> {
         return favoritesRepository.selectFavorites()
     }
+
+    override fun favoriteTracksIds(): Flow<List<Long>> {
+        return favoritesRepository.selectFavoritesIds()
+    }
+
+    override suspend fun insertTrackToFavorites(track: TrackFromAPI) {
+        return favoritesRepository.insertTrackToFavorites(track)
+    }
+
+    override suspend fun deleteTrackFromFavorites(track: TrackFromAPI) {
+        return favoritesRepository.deleteTrackFromFavorites(track)
+    }
 }

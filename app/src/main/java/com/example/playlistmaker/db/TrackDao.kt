@@ -18,6 +18,6 @@ interface TrackDao {
     @Query("SELECT * FROM track_table ORDER BY timestamp DESC")
     fun getTracks(): Flow<List<TrackEntity>>
 
-    @Query("SELECT id FROM track_table")
+    @Query("SELECT trackId FROM track_table")
     fun getIdTracks(): List<Long>
 }

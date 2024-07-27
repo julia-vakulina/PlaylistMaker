@@ -97,12 +97,14 @@ class PlayerActivity : AppCompatActivity() {
 
         }
 
+
         viewModel.getIsFavoriteLiveData().observe(this) { isFavorite ->
             changeFavoriteButton(isFavorite)
             track.isFavorite = isFavorite
         }
+
         lifecycleScope.launch(Dispatchers.IO) {
-            val isFavorite = viewModel.isTrackFavorite(track.id)
+            val isFavorite = viewModel.isTrackFavorite(track.trackId)
             changeFavoriteButton(isFavorite)
             track.isFavorite = isFavorite
         }
@@ -117,12 +119,8 @@ class PlayerActivity : AppCompatActivity() {
         }
     }
     private fun changeFavoriteButton(isFavorite: Boolean) {
-        val buttonImageResource = if (isFavorite) {
-            R.drawable.favorite_pressed
-        } else {
-            R.drawable.favorite
-        }
-        buttonFavorite.setImageResource(buttonImageResource)
+        if (isFavorite) buttonFavorite.setImageResource(R.drawable.favorite_pressed)
+        else buttonFavorite.setImageResource(R.drawable.favorite)
     }
     override fun onPause() {
         super.onPause()

@@ -20,7 +20,7 @@ class SearchHistoryRepositoryImpl(context: Context,
 
         val favoriteTracksIds = appDatabase.trackDao().getIdTracks()
         history.getTracks().forEach {
-            if (it.id in favoriteTracksIds) {
+            if (it.trackId in favoriteTracksIds) {
                 it.isFavorite = true
             }
         }

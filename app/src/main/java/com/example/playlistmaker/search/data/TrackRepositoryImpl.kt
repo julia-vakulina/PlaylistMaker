@@ -22,7 +22,7 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient,
                 with(response as TracksResponse){
                 val data = results.map {
                     TrackFromAPI(
-                        it.id,
+                        it.trackId,
                         it.trackName,
                         it.artistName,
                         it.trackTimeMillis,
@@ -49,7 +49,7 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient,
     private fun markFavoriteTracks(data: List<TrackFromAPI>,
                                            favoriteTracksIds: List<Long>) {
         data.forEach {
-            if (it.id in favoriteTracksIds) {
+            if (it.trackId in favoriteTracksIds) {
                 it.isFavorite = true
             }
         }

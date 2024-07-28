@@ -11,6 +11,6 @@ class TrackDbConvertor {
     }
     fun map(track: TrackEntity) : TrackFromAPI {
         return TrackFromAPI(track.trackId, track.trackName, track.artistName, track.trackTimeMillis, track.artworkUrl100,
-            track.collectionName, track.releaseDate, track.primaryGenreName, track.country, track.previewUrl)
+            track.collectionName, track.releaseDate, track.primaryGenreName, track.country, track.previewUrl, isFavorite = true)
     }
 }

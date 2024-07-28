@@ -99,15 +99,18 @@ class PlayerActivity : AppCompatActivity() {
 
 
         viewModel.getIsFavoriteLiveData().observe(this) { isFavorite ->
+            if (isFavorite != null) {
             changeFavoriteButton(isFavorite)
             track.isFavorite = isFavorite
+            }
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val isFavorite = viewModel.isTrackFavorite(track.trackId)
-            changeFavoriteButton(isFavorite)
-            track.isFavorite = isFavorite
-        }
+        //lifecycleScope.launch(Dispatchers.IO) {
+        //    val isFavorite = viewModel.isTrackFavorite(track.trackId)
+        //    changeFavoriteButton(isFavorite)
+        //    track.isFavorite = isFavorite
+        //}
+        changeFavoriteButton(track.isFavorite)
 
         buttonFavorite.setOnClickListener {
             viewModel.onFavoriteClicked(track)

@@ -22,9 +22,9 @@ class PlayerViewModel(
     private var timerLiveData = MutableLiveData(0)
     private var playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.Default)
     private var timerJob: Job? = null
-    private var isFavoriteLiveData = MutableLiveData(false)
+    private var isFavoriteLiveData = MutableLiveData<Boolean?>(null)
 
-    fun getIsFavoriteLiveData(): LiveData<Boolean> = isFavoriteLiveData
+    fun getIsFavoriteLiveData(): LiveData<Boolean?> = isFavoriteLiveData
     fun getTimerLiveData() : LiveData<Int> = timerLiveData
     fun getPlayerStateLiveData() : LiveData<PlayerState> = playerStateLiveData
     fun startTimer() {

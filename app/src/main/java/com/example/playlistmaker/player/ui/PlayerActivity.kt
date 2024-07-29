@@ -104,12 +104,7 @@ class PlayerActivity : AppCompatActivity() {
             track.isFavorite = isFavorite
             }
         }
-
-        //lifecycleScope.launch(Dispatchers.IO) {
-        //    val isFavorite = viewModel.isTrackFavorite(track.trackId)
-        //    changeFavoriteButton(isFavorite)
-        //    track.isFavorite = isFavorite
-        //}
+        
         changeFavoriteButton(track.isFavorite)
 
         buttonFavorite.setOnClickListener {

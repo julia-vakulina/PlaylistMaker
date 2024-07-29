@@ -19,12 +19,13 @@ class SearchHistoryRepositoryImpl(context: Context,
     override fun getHistory(): List<TrackFromAPI> {
 
         val favoriteTracksIds = appDatabase.trackDao().getIdTracks()
-        history.getTracks().forEach {
+        val historyTracks = history.getTracks()
+        historyTracks.forEach {
             if (it.trackId in favoriteTracksIds) {
                 it.isFavorite = true
             }
         }
-        return history.getTracks()
+        return historyTracks
     }
 
     override fun putToHistory(trackFromAPI: TrackFromAPI): Boolean {

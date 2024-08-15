@@ -129,4 +129,8 @@
     <style name="TabCaps" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
     </style>
+<style name="BottomNavBar">
+    <item name="itemIconTint">@color/color_bottom_nav</item>
+    <item name="itemTextColor">@color/color_bottom_nav</item>
+</style>
 </resources>

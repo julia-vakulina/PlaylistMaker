@@ -19,6 +19,7 @@ class SearchHistoryRepositoryImpl(context: Context,
     override fun getHistory(): List<TrackFromAPI> {
 
         val favoriteTracksIds = appDatabase.trackDao().getIdTracks()
+
         val historyTracks = history.getTracks()
         historyTracks.forEach {
             if (it.trackId in favoriteTracksIds) {

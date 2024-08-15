@@ -43,8 +43,6 @@ class PlayerActivity : AppCompatActivity() {
         val json = intent.getStringExtra(INTENT_KEY)
         val track = jsonParser.jsonToObject(json.toString(), TrackFromAPI::class.java)
 
-
-
         Glide.with(this).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")).
         placeholder(R.drawable.snake).into(trackImage)
         trackName.text = track.trackName
@@ -125,5 +123,7 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.onPause()
 
     }
+
+
 
 }

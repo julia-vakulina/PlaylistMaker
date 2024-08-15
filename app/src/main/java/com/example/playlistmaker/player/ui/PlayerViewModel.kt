@@ -1,6 +1,5 @@
 package com.example.playlistmaker.player.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -72,16 +71,16 @@ class PlayerViewModel(
             track.isFavorite = newFavoriteStatus
         }
     }
-    suspend fun isTrackFavorite(trackId: Long): Boolean {
-        val favoriteTracks: Flow<List<Long>> = favoritesInteractor.favoriteTracksIds()
+    //suspend fun isTrackFavorite(trackId: Long): Boolean {
+    //    val favoriteTracks: Flow<List<Long>> = favoritesInteractor.favoriteTracksIds()
 
-        val favoriteTracksIds: MutableList<Long> = mutableListOf()
+    //    val favoriteTracksIds: MutableList<Long> = mutableListOf()
 
-        favoriteTracks.collect { list ->
-            favoriteTracksIds.addAll(list)
-        }
-        return favoriteTracksIds.contains(trackId)
-    }
+    //    favoriteTracks.collect { list ->
+    //        favoriteTracksIds.addAll(list)
+    //    }
+    //    return favoriteTracksIds.contains(trackId)
+    //}
     override fun onCleared() {
         super.onCleared()
         playerInteractor.reset()

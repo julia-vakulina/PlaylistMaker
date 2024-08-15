@@ -1,12 +1,10 @@
 package com.example.playlistmaker.search.ui
 
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.db.FavoritesInteractor
 import com.example.playlistmaker.player.domain.TrackFromAPI
 import com.example.playlistmaker.search.domain.HistoryInteractor
 import com.example.playlistmaker.search.domain.TrackInteractor
@@ -16,7 +14,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SearchViewModel(private val getTrackInteractor: TrackInteractor,
-    private val historyInteractor: HistoryInteractor) : ViewModel() {
+    private val historyInteractor: HistoryInteractor,
+    private val favoritesInteractor: FavoritesInteractor) : ViewModel() {
     private var loadingLiveData = MutableLiveData(false)
     private var placeholderLiveData = MutableLiveData("")
     private var tracksLiveData = MutableLiveData(ArrayList<TrackFromAPI>())
@@ -86,6 +85,12 @@ class SearchViewModel(private val getTrackInteractor: TrackInteractor,
             delay(SEARCH_DEBOUNCE_DELAY)
             searchTrack(text)
         }
+    }
+
+    fun markTrackFavorite(track: TrackFromAPI) {
+        val favoriteTracks = favoritesInteractor.favoriteTracksIds()
+        if (track.trackId in favoriteTracks) track.isFavorite = true
+        else track.isFavorite = false
     }
 
     companion object {

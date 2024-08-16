@@ -20,4 +20,7 @@ interface TrackDao {
 
     @Query("SELECT trackId FROM track_table")
     fun getIdTracks(): List<Long>
+
+    @Query("SELECT COUNT(*)>0 FROM track_table WHERE trackId = :id")
+    suspend fun isTrackLiked(id: Long): Boolean
 }

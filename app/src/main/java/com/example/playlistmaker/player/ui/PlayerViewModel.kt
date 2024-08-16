@@ -18,6 +18,7 @@ class PlayerViewModel(
     private val favoritesInteractor: FavoritesInteractor
 ) : ViewModel() {
 
+    private lateinit var track: TrackFromAPI
     private var timerLiveData = MutableLiveData(0)
     private var playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.Default)
     private var timerJob: Job? = null
@@ -26,6 +27,14 @@ class PlayerViewModel(
     fun getIsFavoriteLiveData(): LiveData<Boolean?> = isFavoriteLiveData
     fun getTimerLiveData() : LiveData<Int> = timerLiveData
     fun getPlayerStateLiveData() : LiveData<PlayerState> = playerStateLiveData
+    fun setupTrack(trackFromAPI: TrackFromAPI) {
+        track = trackFromAPI
+        viewModelScope.launch {
+            val isTrackFavorite = favoritesInteractor.isTrackFavorite(trackFromAPI.trackId)
+            track.isFavorite = isTrackFavorite
+            isFavoriteLiveData.postValue(isTrackFavorite)
+        }
+    }
     fun startTimer() {
         timerJob?.cancel()
         timerJob = viewModelScope.launch {

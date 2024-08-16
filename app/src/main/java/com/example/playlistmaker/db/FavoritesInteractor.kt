@@ -8,4 +8,5 @@ interface FavoritesInteractor {
      fun favoriteTracksIds(): List<Long>
     suspend fun insertTrackToFavorites(track: TrackFromAPI)
     suspend fun deleteTrackFromFavorites(track: TrackFromAPI)
+    suspend fun isTrackFavorite(id: Long): Boolean
 }

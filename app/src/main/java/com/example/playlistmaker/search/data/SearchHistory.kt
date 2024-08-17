@@ -39,6 +39,14 @@ class SearchHistory (private val sharedPreferences: SharedPreferences) {
         if (historyList.contains(track)) {
             historyList.remove(track)
         }
+        val iterator = historyList.iterator()
+        while (iterator.hasNext()) {
+            val itTrack: TrackFromAPI = iterator.next()
+            if (itTrack.trackId == track.trackId)
+            {
+                iterator.remove()
+            }
+        }
         if (historyList.size >= HISTORY_SIZE){
             historyList.removeAt(HISTORY_SIZE -1)
         }

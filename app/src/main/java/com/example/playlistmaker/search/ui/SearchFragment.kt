@@ -119,7 +119,6 @@ class SearchFragment : Fragment() {
             }
         }
 
-        //val searchRunnable = Runnable { searchTrack(editTextSearch.text.toString()) }
 
         editTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -142,8 +141,6 @@ class SearchFragment : Fragment() {
             else viewModel.searchHistoryVisible(false)
             viewModel.clear()
             editTextSearch.setText("")
-            //val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            //inputMethodManager?.hideSoftInputFromWindow(editTextSearch.windowToken, 0)
             adapter.setTracks(ArrayList())
             adapter.notifyDataSetChanged()
             placeHolderNoConnect.visibility = View.GONE

@@ -2,7 +2,9 @@ package com.example.playlistmaker.search.domain
 
 import com.example.playlistmaker.player.domain.TrackFromAPI
 import com.example.playlistmaker.search.data.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import java.util.concurrent.Executors
 
@@ -18,7 +20,7 @@ class TrackInteractorImpl (private val repository: TrackRepository) : TrackInter
         //        }
         //    }
         //}
-        return repository.searchTrack(expression).map { result ->
+        return repository.searchTrack(expression).flowOn(Dispatchers.IO).map { result ->
             when (result) {
                 is Resource.Success -> {
                     Pair(result.data, null)

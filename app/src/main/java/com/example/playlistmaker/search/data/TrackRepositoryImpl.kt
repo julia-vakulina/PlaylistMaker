@@ -1,12 +1,16 @@
 package com.example.playlistmaker.search.data
 
+import com.example.playlistmaker.db.AppDatabase
+import com.example.playlistmaker.db.TrackDbConvertor
 import com.example.playlistmaker.player.domain.TrackFromAPI
 import com.example.playlistmaker.search.domain.TrackRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
 
-class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepository {
+class TrackRepositoryImpl(private val networkClient: NetworkClient,
+    private val appDatabase: AppDatabase,
+    private val trackDbConvertor: TrackDbConvertor) : TrackRepository {
     override fun searchTrack(expression: String): Flow<Resource<List<TrackFromAPI>>> = flow {
         val response = networkClient.doRequest(TrackSearchRequest(expression))
         when (response.resultCode) {
@@ -18,6 +22,7 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
                 with(response as TracksResponse){
                 val data = results.map {
                     TrackFromAPI(
+                        it.trackId,
                         it.trackName,
                         it.artistName,
                         it.trackTimeMillis,
@@ -29,6 +34,10 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
                         it.previewUrl
                         )
                     }
+
+                    val favoriteTracksIds = appDatabase.trackDao().getIdTracks()
+                    markFavoriteTracks(data, favoriteTracksIds)
+
                     emit(Resource.Success(data))
                 }
             }
@@ -37,5 +46,14 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
             }
         }
     }
+    private fun markFavoriteTracks(data: List<TrackFromAPI>,
+                                           favoriteTracksIds: List<Long>) {
+        data.forEach {
+            if (it.trackId in favoriteTracksIds) {
+                it.isFavorite = true
+            }
+        }
+    }
+
 
 }

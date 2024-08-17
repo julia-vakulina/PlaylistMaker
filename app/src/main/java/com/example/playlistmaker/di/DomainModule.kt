@@ -2,6 +2,11 @@ package com.example.playlistmaker.di
 
 import android.content.Context
 import android.media.MediaPlayer
+import com.example.playlistmaker.db.FavoritesInteractor
+import com.example.playlistmaker.db.FavoritesInteractorImpl
+import com.example.playlistmaker.db.FavoritesRepository
+import com.example.playlistmaker.db.FavoritesRepositoryImpl
+import com.example.playlistmaker.db.TrackDbConvertor
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.PlayerInteractorImpl
 import com.example.playlistmaker.search.data.JsonParserImpl
@@ -31,7 +36,7 @@ val domainModule = module {
         PlayerInteractorImpl(get())
     }
     single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(get())
+        SearchHistoryRepositoryImpl(get(), get())
     }
     single<HistoryInteractor> {
         HistoryInteractorImpl(get())
@@ -57,4 +62,11 @@ val domainModule = module {
         JsonParserImpl(get())
     }
     single { MediaPlayer() }
+    factory { TrackDbConvertor() }
+    single<FavoritesRepository> {
+        FavoritesRepositoryImpl(get(), get())
+    }
+    single<FavoritesInteractor> {
+        FavoritesInteractorImpl(get())
+    }
 }

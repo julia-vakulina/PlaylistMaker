@@ -5,11 +5,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.TrackFromAPI
 import com.example.playlistmaker.search.domain.JsonParser
 import com.example.playlistmaker.search.ui.INTENT_KEY
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -21,11 +24,12 @@ class PlayerActivity : AppCompatActivity() {
     private val viewModel: PlayerViewModel by viewModel()
     private lateinit var trackTime: TextView
     val jsonParser: JsonParser by inject()
+    private lateinit var buttonFavorite: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_track)
 
-         trackTime = findViewById<TextView>(R.id.track_time)
+         trackTime = findViewById(R.id.track_time)
         val trackImage = findViewById<ImageView>(R.id.imageTrack_Track)
         val trackName = findViewById<TextView>(R.id.nameTrack_Track)
         val trackArtist = findViewById<TextView>(R.id.artistTrack_Track)
@@ -34,11 +38,12 @@ class PlayerActivity : AppCompatActivity() {
         val trackYear = findViewById<TextView>(R.id.year)
         val trackGenre = findViewById<TextView>(R.id.genre)
         val trackCountry = findViewById<TextView>(R.id.country)
+        buttonFavorite = findViewById(R.id.button_favorite_track)
 
         val json = intent.getStringExtra(INTENT_KEY)
         val track = jsonParser.jsonToObject(json.toString(), TrackFromAPI::class.java)
 
-
+        viewModel.setupTrack(track)
 
         Glide.with(this).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")).
         placeholder(R.drawable.snake).into(trackImage)
@@ -93,16 +98,34 @@ class PlayerActivity : AppCompatActivity() {
         }
 
 
+        viewModel.getIsFavoriteLiveData().observe(this) { isFavorite ->
+            if (isFavorite != null) {
+            changeFavoriteButton(isFavorite)
+            track.isFavorite = isFavorite
+            }
+        }
+        
+        changeFavoriteButton(track.isFavorite)
+
+        buttonFavorite.setOnClickListener {
+            viewModel.onFavoriteClicked(track)
+        }
 
         val buttonLeft = findViewById<Button>(R.id.button_left_track)
         buttonLeft.setOnClickListener {
             this.onBackPressed()
         }
     }
+    private fun changeFavoriteButton(isFavorite: Boolean) {
+        if (isFavorite) buttonFavorite.setImageResource(R.drawable.favorite_pressed)
+        else buttonFavorite.setImageResource(R.drawable.favorite)
+    }
     override fun onPause() {
         super.onPause()
         viewModel.onPause()
 
     }
+
+
 
 }

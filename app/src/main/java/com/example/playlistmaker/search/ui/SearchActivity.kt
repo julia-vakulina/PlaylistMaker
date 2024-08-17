@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
@@ -65,6 +66,8 @@ class SearchActivity : AppCompatActivity() {
         val searchHistoryView = findViewById<RecyclerView>(R.id.searchHistoryView)
         viewModel.getHistory()
 
+
+
         searchHistoryView.layoutManager = LinearLayoutManager(this)
         searchHistoryView.adapter = adapterHistory
 
@@ -111,7 +114,6 @@ class SearchActivity : AppCompatActivity() {
         viewModel.getSearchHistoryLiveData().observe(this) {isVisible ->
             changeSearchHistoryVisibility(isVisible)
         }
-
 
 
         val buttonUpdate = findViewById<Button>(R.id.buttonUpdate)
@@ -225,11 +227,11 @@ class SearchActivity : AppCompatActivity() {
         else {searchHistoryLayout.visibility = View.GONE}
     }
     fun openPlayer(trackFromAPI: TrackFromAPI) {
+        viewModel.markTrackFavorite(trackFromAPI)
         val playerIntent = Intent(this, PlayerActivity::class.java)
         val gson = Gson()
         val json = gson.toJson(trackFromAPI)
         startActivity(playerIntent.putExtra(INTENT_KEY, json))
-
     }
     companion object {
         private const val SEARCH_TEXT_KEY = "search_text_key"

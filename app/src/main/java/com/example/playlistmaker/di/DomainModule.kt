@@ -6,9 +6,14 @@ import com.example.playlistmaker.db.FavoritesInteractor
 import com.example.playlistmaker.db.FavoritesInteractorImpl
 import com.example.playlistmaker.db.FavoritesRepository
 import com.example.playlistmaker.db.FavoritesRepositoryImpl
+import com.example.playlistmaker.db.PlaylistDbConvertor
 import com.example.playlistmaker.db.TrackDbConvertor
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.PlayerInteractorImpl
+import com.example.playlistmaker.playlists.data.PlaylistsRepositoryImpl
+import com.example.playlistmaker.playlists.domain.PlaylistInteractor
+import com.example.playlistmaker.playlists.domain.PlaylistInteractorImpl
+import com.example.playlistmaker.playlists.domain.PlaylistsRepository
 import com.example.playlistmaker.search.data.JsonParserImpl
 import com.example.playlistmaker.search.domain.HistoryInteractor
 import com.example.playlistmaker.search.domain.HistoryInteractorImpl
@@ -25,6 +30,7 @@ import com.example.playlistmaker.settings.domain.NavigatorRepository
 import com.example.playlistmaker.settings.domain.SettingsInteractor
 import com.example.playlistmaker.settings.domain.SettingsRepository
 import com.example.playlistmaker.settings.domain.SharingInteractor
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -68,5 +74,10 @@ val domainModule = module {
     }
     single<FavoritesInteractor> {
         FavoritesInteractorImpl(get())
+    }
+    factory { PlaylistDbConvertor(get()) }
+    single<PlaylistsRepository> {PlaylistsRepositoryImpl(get(), get(), androidApplication())}
+    single<PlaylistInteractor> {
+        PlaylistInteractorImpl(get())
     }
 }

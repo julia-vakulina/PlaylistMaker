@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.TrackFromAPI
-import com.example.playlistmaker.player.ui.PlayerActivity
+import com.example.playlistmaker.player.ui.PlayerFragment
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -227,7 +227,7 @@ class SearchActivity : AppCompatActivity() {
     }
     fun openPlayer(trackFromAPI: TrackFromAPI) {
         viewModel.markTrackFavorite(trackFromAPI)
-        val playerIntent = Intent(this, PlayerActivity::class.java)
+        val playerIntent = Intent(this, PlayerFragment::class.java)
         val gson = Gson()
         val json = gson.toJson(trackFromAPI)
         startActivity(playerIntent.putExtra(INTENT_KEY, json))

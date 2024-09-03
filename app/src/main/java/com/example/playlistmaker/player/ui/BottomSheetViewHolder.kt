@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlists.domain.Playlist
@@ -16,11 +17,11 @@ class BottomSheetViewHolder(view: View): RecyclerView.ViewHolder(view) {
     private val imagePlaylist: ImageView = itemView.findViewById(R.id.imagePlaylistBottom)
     private val namePlaylist: TextView = itemView.findViewById(R.id.namePlaylistBottom)
     private val numberTracks: TextView = itemView.findViewById(R.id.numberTracksBottom)
-    fun bind(playlist: Playlist) {
+    fun bind(playlist: Playlist){
         Glide.with(itemView.context)
             .load(playlist.pathToImage.toUri())
             .placeholder(R.drawable.snake)
-            .transform(
+            .transform(CenterCrop(),
                 RoundedCorners(
                     TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,

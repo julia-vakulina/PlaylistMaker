@@ -29,7 +29,9 @@
                 android:text="Темная тема"
                 android:layout_gravity="start"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_little"
+                style="@style/SettingsSwitch" />
         </LinearLayout>
         <LinearLayout
             style="@style/StandartHorizontalLayout">

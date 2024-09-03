@@ -5,11 +5,11 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/button_margin"
     android:orientation="horizontal">
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imagePlaylistBottom"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:src="@drawable/snake"/>
+        tools:src="@drawable/snake" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

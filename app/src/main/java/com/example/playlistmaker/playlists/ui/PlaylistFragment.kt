@@ -1,5 +1,6 @@
 package com.example.playlistmaker.playlists.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,16 +14,27 @@ import androidx.core.net.toUri
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
+import com.example.playlistmaker.player.ui.PlayerFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PlaylistFragment: Fragment() {
+class PlaylistFragment(
+    //private val isAudioPlayer: Boolean = false
+    ): Fragment() {
 
     companion object {
-        fun newInstance() = PlaylistFragment()
+        @JvmStatic
+        fun newInstance(
+        //isAudioPlayer: Boolean
+         ) = PlaylistFragment(
+            //isAudioPlayer
+            )
     }
     private var _binding: FragmentNewPlaylistBinding? = null
     private val binding get() = _binding!!
@@ -40,6 +52,7 @@ class PlaylistFragment: Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.buttonCreatePlaylist.isEnabled = false
@@ -53,7 +66,9 @@ class PlaylistFragment: Fragment() {
         val pickAlbumImage =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
-                    binding.newPlaylistImage.setImageURI(uri)
+                    Glide.with(this).load(uri)
+                        .transform(CenterCrop(),RoundedCorners(16))
+                        .into(binding.newPlaylistImage)
                     imageIsEmpty = false
                     pathToPlaylistImage = uri.toString()
                 } else {
@@ -66,14 +81,17 @@ class PlaylistFragment: Fragment() {
         binding.buttonLeft.setOnClickListener {
            requireActivity().onBackPressedDispatcher.onBackPressed()
        }
-        confirmDialog = MaterialAlertDialogBuilder(requireActivity())
+        confirmDialog = MaterialAlertDialogBuilder(requireActivity(), R.style.MyThemeOverlay_MaterialComponents_MaterialAlertDialog)
             .setTitle(R.string.dialog_title)
             .setMessage(R.string.dialog_message)
             .setNeutralButton(R.string.dialog_cancel) { dialog, which ->
 
             }.setPositiveButton(R.string.dialog_finish) { dialog, which ->
+                //if (isAudioPlayer) {
+                //    (requireActivity() as PlayerFragment).closePlaylist()
+                //} else
+                findNavController().navigateUp()
 
-                findNavController().popBackStack()
             }
         requireActivity().onBackPressedDispatcher.addCallback{
             if (binding.playlistNameTextInputLayout.editText?.text?.isEmpty() == false ||
@@ -81,13 +99,19 @@ class PlaylistFragment: Fragment() {
                 !imageIsEmpty) {
                 confirmDialog.show()
             } else {
-                findNavController().popBackStack()
+                //if (isAudioPlayer) {
+                //    (requireActivity() as PlayerFragment).closePlaylist()
+                //} else
+                    findNavController().navigateUp()
             }
         }
         binding.buttonCreatePlaylist.setOnClickListener {
             viewModel.savePlaylist(playlistName, playlistDescription, pathToPlaylistImage)
             viewModel.renderState()
-            findNavController().popBackStack()
+            //if (isAudioPlayer) {
+            //    (requireActivity() as PlayerFragment).closePlaylist()
+            //} else
+                findNavController().navigateUp()
         }
         viewModel.getPlaylistIsCreatedLiveData().observe(viewLifecycleOwner) {
             if (pathToPlaylistImage != "")

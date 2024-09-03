@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.playlists.domain.Playlist
@@ -20,7 +21,7 @@ class PlaylistViewHolder(view: View): RecyclerView.ViewHolder(view) {
         Glide.with(itemView.context)
             .load(playlist.pathToImage.toUri())
             .placeholder(R.drawable.snake)
-            .transform(
+            .transform(CenterCrop(),
                 RoundedCorners(
                     TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,

@@ -11,13 +11,14 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imagePlaylist"
             android:layout_width="160dp"
             android:layout_height="160dp"
             tools:src="@drawable/snake"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+
             />
         <TextView
             android:id="@+id/namePlaylist"

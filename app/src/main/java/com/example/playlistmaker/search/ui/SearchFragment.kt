@@ -11,11 +11,14 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.TrackFromAPI
-import com.example.playlistmaker.player.ui.PlayerActivity
+import com.example.playlistmaker.player.ui.PlayerFragment
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -210,11 +213,10 @@ class SearchFragment : Fragment() {
         else {searchHistoryLayout.visibility = View.GONE}
     }
     fun openPlayer(trackFromAPI: TrackFromAPI) {
-        val playerIntent = Intent(requireContext(), PlayerActivity::class.java)
         val gson = Gson()
         val json = gson.toJson(trackFromAPI)
-        startActivity(playerIntent.putExtra(INTENT_KEY, json))
-
+        findNavController().navigate(R.id.action_searchFragment_to_playerActivity,
+            PlayerFragment.createArgs(json))
     }
     companion object {
         private const val SEARCH_TEXT_KEY = "search_text_key"

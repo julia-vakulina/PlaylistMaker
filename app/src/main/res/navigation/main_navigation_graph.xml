@@ -20,13 +20,9 @@
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_playerActivity"
-            app:destination="@id/playerActivity" />
+            app:destination="@id/playerFragment" />
     </fragment>
-    <activity
-        android:id="@+id/playerActivity"
-        android:name="com.example.playlistmaker.player.ui.PlayerActivity"
-        android:label="activity_track"
-        tools:layout="@layout/activity_track" />
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.playlistmaker.settings.ui.SettingsFragment"
@@ -37,4 +33,13 @@
         android:name="com.example.playlistmaker.playlists.ui.PlaylistFragment"
         android:label="fragment_new_playlist"
         tools:layout="@layout/fragment_new_playlist" />
+    <fragment
+        android:id="@+id/playerFragment"
+        android:name="com.example.playlistmaker.player.ui.PlayerFragment"
+        android:label="activity_track"
+        tools:layout="@layout/activity_track" >
+        <action
+            android:id="@+id/action_playerFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
+    </fragment>
 </navigation>

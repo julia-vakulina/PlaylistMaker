@@ -118,9 +118,7 @@
                 android:hint="@string/description"
                 app:layout_constraintEnd_toStartOf="@id/rightBorder"
                 app:layout_constraintStart_toEndOf="@id/leftBorder"
-                app:layout_constraintTop_toBottomOf="@id/playlist_name_text_input_layout"
-
-                >
+                app:layout_constraintTop_toBottomOf="@id/playlist_name_text_input_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"

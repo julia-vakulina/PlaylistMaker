@@ -102,7 +102,7 @@ class PlayerFragment: Fragment() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
         binding.buttonAddPlaylist.setOnClickListener {
-            Log.e("AAA", "add playlist")
+            viewModel.onPause()
             findNavController().navigate(R.id.action_playerFragment_to_playlistFragment)
         }
 
@@ -182,6 +182,11 @@ class PlayerFragment: Fragment() {
             findNavController().navigateUp()
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.reset()
     }
     private fun changeFavoriteButton(isFavorite: Boolean) {
         if (isFavorite) binding.buttonFavoriteTrack.setImageResource(R.drawable.favorite_pressed)

@@ -117,6 +117,9 @@ class PlayerViewModel(
         playerInteractor.reset()
         playerStateLiveData.postValue(PlayerState.Default)
     }
+    fun reset() {
+        playerInteractor.reset()
+    }
     companion object {
         const val PROGRESS_DELAY = 300L
     }

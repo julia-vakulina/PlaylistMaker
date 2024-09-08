@@ -2,6 +2,7 @@ package com.example.playlistmaker.player.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityTrackBinding
 import com.example.playlistmaker.player.domain.TrackFromAPI
@@ -116,7 +119,16 @@ class PlayerFragment: Fragment() {
 
 
         Glide.with(this).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")).
-        placeholder(R.drawable.snake).into(binding.imageTrackTrack)
+        placeholder(R.drawable.snake)
+            .transform(
+                CenterCrop(),
+                RoundedCorners(
+                    TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        resources.getDimension(R.dimen.image_radius_track),
+                        resources.displayMetrics).toInt()
+                )
+            ).into(binding.imageTrackTrack)
         binding.nameTrackTrack.text = track.trackName
         binding.artistTrackTrack.text = track.artistName
         binding.duration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)

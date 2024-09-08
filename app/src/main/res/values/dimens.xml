@@ -9,4 +9,5 @@
     <dimen name="text_height">48dp</dimen>
     <dimen name="string_height">61dp</dimen>
     <dimen name="image_radius">8dp</dimen>
+    <dimen name="image_radius_track">8px</dimen>
 </resources>

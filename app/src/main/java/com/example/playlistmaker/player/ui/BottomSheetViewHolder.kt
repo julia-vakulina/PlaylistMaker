@@ -25,7 +25,7 @@ class BottomSheetViewHolder(view: View): RecyclerView.ViewHolder(view) {
                 RoundedCorners(
                     TypedValue.applyDimension(
                         TypedValue.COMPLEX_UNIT_DIP,
-                        itemView.resources.getDimension(R.dimen.image_radius),
+                        itemView.resources.getDimension(R.dimen.image_radius_track),
                         itemView.resources.displayMetrics).toInt()
                 )
             )

@@ -155,6 +155,8 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorHint">@color/black</item>
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="cursorColor">@color/blue</item>
     </style>
     <style name="button_create_new_playlist" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="cornerRadius">8dp</item>

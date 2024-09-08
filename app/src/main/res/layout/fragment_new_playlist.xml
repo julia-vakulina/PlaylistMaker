@@ -98,14 +98,15 @@
                 app:layout_constraintBottom_toTopOf="@id/playlist_description_text_input_layout"
                 app:layout_constraintEnd_toStartOf="@id/rightBorder"
                 app:layout_constraintStart_toEndOf="@id/leftBorder"
-                app:layout_constraintTop_toBottomOf="@id/new_playlist_image">
+                app:layout_constraintTop_toBottomOf="@id/new_playlist_image"
+                android:textCursorDrawable="@drawable/cursor"
+                app:cursorColor="@color/blue">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/EditTextNewPlaylist"
-                    android:maxLines="1"
-                    android:textCursorDrawable="@color/blue" />
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -125,7 +126,7 @@
                     android:layout_height="wrap_content"
                     style="@style/EditTextNewPlaylist"
                     android:maxLines="1"
-                    android:textCursorDrawable="@color/blue" />
+                    android:textCursorDrawable="@drawable/cursor" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

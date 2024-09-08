@@ -95,7 +95,7 @@
                 android:drawableStart="@drawable/search"
                 android:drawablePadding="8dp"
                 android:layout_marginVertical="8dp"
-                android:textCursorDrawable="@color/blue"/>
+                android:textCursorDrawable="@drawable/cursor" />
             <ImageView
                 android:id="@+id/clearIcon"
                 android:layout_width="wrap_content"

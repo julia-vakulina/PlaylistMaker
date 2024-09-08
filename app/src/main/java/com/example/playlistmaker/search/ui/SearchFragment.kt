@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,7 +10,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -84,6 +82,7 @@ class SearchFragment : Fragment() {
         editTextSearch = binding.editTextSearch
         editTextSearch.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus && editTextSearch.text.isEmpty() && viewModel.historyTracks.size!=0) {
+                binding.trackView.visibility = View.GONE
                 searchHistoryLayout.visibility = View.VISIBLE
             } else {
                 searchHistoryLayout.visibility = View.GONE
@@ -101,6 +100,8 @@ class SearchFragment : Fragment() {
         viewModel.getTracksLiveData().observe(viewLifecycleOwner) {tracks ->
             placeHolderNotFound.visibility = View.GONE
             placeHolderNoConnect.visibility = View.GONE
+            searchHistoryLayout.visibility = View.GONE
+            binding.trackView.visibility = View.VISIBLE
             adapter.setTracks(tracks)
             adapter.notifyDataSetChanged()
         }
@@ -157,7 +158,6 @@ class SearchFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
                 if (!s.toString().isEmpty()) viewModel.searchDebounce(s.toString())
                 clearButton.visibility = clearButtonVisibility(s)
                 if (editTextSearch.hasFocus() && s?.isEmpty() == false) {
@@ -217,7 +217,9 @@ class SearchFragment : Fragment() {
         val json = gson.toJson(trackFromAPI)
         findNavController().navigate(R.id.action_searchFragment_to_playerActivity,
             PlayerFragment.createArgs(json))
+
     }
+
     companion object {
         private const val SEARCH_TEXT_KEY = "search_text_key"
     }

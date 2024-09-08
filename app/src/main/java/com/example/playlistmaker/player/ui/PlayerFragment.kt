@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -84,6 +85,7 @@ class PlayerFragment: Fragment() {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         binding.buttonPlusTrack.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            viewModel.getBottomSheet()
         }
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
 
@@ -181,7 +183,9 @@ class PlayerFragment: Fragment() {
         binding.buttonLeftTrack.setOnClickListener {
             findNavController().navigateUp()
         }
-
+        requireActivity().onBackPressedDispatcher.addCallback{
+            findNavController().navigateUp()
+        }
     }
 
     override fun onDestroyView() {
@@ -191,8 +195,5 @@ class PlayerFragment: Fragment() {
     private fun changeFavoriteButton(isFavorite: Boolean) {
         if (isFavorite) binding.buttonFavoriteTrack.setImageResource(R.drawable.favorite_pressed)
         else binding.buttonFavoriteTrack.setImageResource(R.drawable.favorite)
-    }
-    fun closePlaylist() {
-
     }
 }

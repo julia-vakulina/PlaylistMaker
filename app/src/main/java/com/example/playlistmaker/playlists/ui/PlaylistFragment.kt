@@ -20,21 +20,16 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.example.playlistmaker.player.ui.PlayerFragment
+import com.example.playlistmaker.player.ui.PlayerViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PlaylistFragment(
-    //private val isAudioPlayer: Boolean = false
-    ): Fragment() {
+class PlaylistFragment(): Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(
-        //isAudioPlayer: Boolean
-         ) = PlaylistFragment(
-            //isAudioPlayer
-            )
+        fun newInstance() = PlaylistFragment()
     }
     private var _binding: FragmentNewPlaylistBinding? = null
     private val binding get() = _binding!!

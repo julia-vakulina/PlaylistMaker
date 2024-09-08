@@ -100,8 +100,7 @@ class SearchFragment : Fragment() {
         viewModel.getTracksLiveData().observe(viewLifecycleOwner) {tracks ->
             placeHolderNotFound.visibility = View.GONE
             placeHolderNoConnect.visibility = View.GONE
-            searchHistoryLayout.visibility = View.GONE
-            binding.trackView.visibility = View.VISIBLE
+            //searchHistoryLayout.visibility = View.GONE
             adapter.setTracks(tracks)
             adapter.notifyDataSetChanged()
         }
@@ -112,6 +111,9 @@ class SearchFragment : Fragment() {
         viewModel.getSearchHistoryLiveData().observe(viewLifecycleOwner) {isVisible ->
             changeSearchHistoryVisibility(isVisible)
         }
+        viewModel.getTracksListVisibilityLiveData().observe(viewLifecycleOwner) { isVisible ->
+            changeSearchResultsVisibility(isVisible)
+        }
 
 
 
@@ -119,7 +121,7 @@ class SearchFragment : Fragment() {
         fun searchTrack(text: String) {
             if (text.isNotEmpty()) {
                 viewModel.searchTrack(text)
-
+                viewModel.tracksListVisible(true)
             }
         }
 
@@ -158,7 +160,10 @@ class SearchFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!s.toString().isEmpty()) viewModel.searchDebounce(s.toString())
+                if (!s.toString().isEmpty()) {
+                    viewModel.searchDebounce(s.toString())
+                    viewModel.tracksListVisible(true)
+                }
                 clearButton.visibility = clearButtonVisibility(s)
                 if (editTextSearch.hasFocus() && s?.isEmpty() == false) {
                     searchHistoryLayout.visibility = View.GONE
@@ -169,6 +174,9 @@ class SearchFragment : Fragment() {
             }
             override fun afterTextChanged(s: Editable?) {
                 searchText = s.toString()
+                if (searchText.isEmpty()) {
+                    viewModel.tracksListVisible(false)
+                }
             }
         }
         editTextSearch.addTextChangedListener(simpleTextWatcher)
@@ -212,12 +220,23 @@ class SearchFragment : Fragment() {
         if (visible) {searchHistoryLayout.visibility = View.VISIBLE}
         else {searchHistoryLayout.visibility = View.GONE}
     }
+    private fun changeSearchResultsVisibility(visible: Boolean) {
+        if (visible) {
+            binding.trackView.visibility = View.VISIBLE
+        } else {
+            binding.trackView.visibility = View.GONE
+        }
+    }
     fun openPlayer(trackFromAPI: TrackFromAPI) {
         val gson = Gson()
         val json = gson.toJson(trackFromAPI)
         findNavController().navigate(R.id.action_searchFragment_to_playerActivity,
             PlayerFragment.createArgs(json))
 
+    }
+    override fun onStop() {
+        super.onStop()
+        viewModel.tracksListVisible(false)
     }
 
     companion object {

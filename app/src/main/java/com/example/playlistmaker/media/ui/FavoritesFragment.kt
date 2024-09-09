@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.FragmentFavoritesBinding
 import com.example.playlistmaker.player.domain.TrackFromAPI
-import com.example.playlistmaker.player.ui.PlayerActivity
+import com.example.playlistmaker.player.ui.PlayerFragment
 import com.example.playlistmaker.search.ui.INTENT_KEY
 import com.example.playlistmaker.search.ui.TrackAdapter
 import com.google.gson.Gson
@@ -65,7 +65,7 @@ class FavoritesFragment: Fragment() {
         favoriteTracksAdapter.notifyDataSetChanged()
     }
     fun openPlayer(trackFromAPI: TrackFromAPI) {
-        val playerIntent = Intent(requireContext(), PlayerActivity::class.java)
+        val playerIntent = Intent(requireContext(), PlayerFragment::class.java)
         val gson = Gson()
         val json = gson.toJson(trackFromAPI)
         startActivity(playerIntent.putExtra(INTENT_KEY, json))

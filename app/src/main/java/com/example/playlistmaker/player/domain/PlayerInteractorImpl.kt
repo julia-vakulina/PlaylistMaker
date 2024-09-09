@@ -1,6 +1,7 @@
 package com.example.playlistmaker.player.domain
 
 import android.media.MediaPlayer
+import android.util.Log
 
 class PlayerInteractorImpl(private val player: MediaPlayer): PlayerInteractor {
     companion object {

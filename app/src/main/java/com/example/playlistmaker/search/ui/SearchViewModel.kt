@@ -21,11 +21,13 @@ class SearchViewModel(private val getTrackInteractor: TrackInteractor,
     private var tracksLiveData = MutableLiveData(ArrayList<TrackFromAPI>())
     private var tracksHistoryLiveData = MutableLiveData(ArrayList<TrackFromAPI>())
     private var searchHistoryLiveData = MutableLiveData(false)
+    private var tracksListLiveData = MutableLiveData(false)
     fun getLoadingLiveData(): LiveData<Boolean> = loadingLiveData
     fun getPlaceholderLiveData(): LiveData<String> = placeholderLiveData
     fun getTracksLiveData(): LiveData<ArrayList<TrackFromAPI>> = tracksLiveData
     fun getTracksHistoryLiveData() : LiveData<ArrayList<TrackFromAPI>> = tracksHistoryLiveData
     fun getSearchHistoryLiveData(): LiveData<Boolean> = searchHistoryLiveData
+    fun getTracksListVisibilityLiveData(): LiveData<Boolean> = tracksListLiveData
 
     private var searchJob: Job? = null
     var historyTracks = ArrayList<TrackFromAPI>()
@@ -71,6 +73,9 @@ class SearchViewModel(private val getTrackInteractor: TrackInteractor,
     }
     fun searchHistoryVisible(visible: Boolean) {
         searchHistoryLiveData.postValue(visible)
+    }
+    fun tracksListVisible(visible: Boolean) {
+        tracksListLiveData.postValue(visible)
     }
     fun clear() {
         tracksLiveData.postValue(ArrayList<TrackFromAPI>())

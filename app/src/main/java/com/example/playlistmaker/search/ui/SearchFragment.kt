@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,10 +11,12 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.player.domain.TrackFromAPI
-import com.example.playlistmaker.player.ui.PlayerActivity
+import com.example.playlistmaker.player.ui.PlayerFragment
 import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -81,6 +82,7 @@ class SearchFragment : Fragment() {
         editTextSearch = binding.editTextSearch
         editTextSearch.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus && editTextSearch.text.isEmpty() && viewModel.historyTracks.size!=0) {
+                binding.trackView.visibility = View.GONE
                 searchHistoryLayout.visibility = View.VISIBLE
             } else {
                 searchHistoryLayout.visibility = View.GONE
@@ -98,6 +100,7 @@ class SearchFragment : Fragment() {
         viewModel.getTracksLiveData().observe(viewLifecycleOwner) {tracks ->
             placeHolderNotFound.visibility = View.GONE
             placeHolderNoConnect.visibility = View.GONE
+            //searchHistoryLayout.visibility = View.GONE
             adapter.setTracks(tracks)
             adapter.notifyDataSetChanged()
         }
@@ -108,6 +111,9 @@ class SearchFragment : Fragment() {
         viewModel.getSearchHistoryLiveData().observe(viewLifecycleOwner) {isVisible ->
             changeSearchHistoryVisibility(isVisible)
         }
+        viewModel.getTracksListVisibilityLiveData().observe(viewLifecycleOwner) { isVisible ->
+            changeSearchResultsVisibility(isVisible)
+        }
 
 
 
@@ -115,7 +121,7 @@ class SearchFragment : Fragment() {
         fun searchTrack(text: String) {
             if (text.isNotEmpty()) {
                 viewModel.searchTrack(text)
-
+                viewModel.tracksListVisible(true)
             }
         }
 
@@ -154,8 +160,10 @@ class SearchFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                if (!s.toString().isEmpty()) viewModel.searchDebounce(s.toString())
+                if (!s.toString().isEmpty()) {
+                    viewModel.searchDebounce(s.toString())
+                    viewModel.tracksListVisible(true)
+                }
                 clearButton.visibility = clearButtonVisibility(s)
                 if (editTextSearch.hasFocus() && s?.isEmpty() == false) {
                     searchHistoryLayout.visibility = View.GONE
@@ -166,6 +174,9 @@ class SearchFragment : Fragment() {
             }
             override fun afterTextChanged(s: Editable?) {
                 searchText = s.toString()
+                if (searchText.isEmpty()) {
+                    viewModel.tracksListVisible(false)
+                }
             }
         }
         editTextSearch.addTextChangedListener(simpleTextWatcher)
@@ -209,13 +220,25 @@ class SearchFragment : Fragment() {
         if (visible) {searchHistoryLayout.visibility = View.VISIBLE}
         else {searchHistoryLayout.visibility = View.GONE}
     }
+    private fun changeSearchResultsVisibility(visible: Boolean) {
+        if (visible) {
+            binding.trackView.visibility = View.VISIBLE
+        } else {
+            binding.trackView.visibility = View.GONE
+        }
+    }
     fun openPlayer(trackFromAPI: TrackFromAPI) {
-        val playerIntent = Intent(requireContext(), PlayerActivity::class.java)
         val gson = Gson()
         val json = gson.toJson(trackFromAPI)
-        startActivity(playerIntent.putExtra(INTENT_KEY, json))
+        findNavController().navigate(R.id.action_searchFragment_to_playerActivity,
+            PlayerFragment.createArgs(json))
 
     }
+    override fun onStop() {
+        super.onStop()
+        viewModel.tracksListVisible(false)
+    }
+
     companion object {
         private const val SEARCH_TEXT_KEY = "search_text_key"
     }

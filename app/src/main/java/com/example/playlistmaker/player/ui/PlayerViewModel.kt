@@ -1,12 +1,18 @@
 package com.example.playlistmaker.player.ui
 
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.R
 import com.example.playlistmaker.db.FavoritesInteractor
 import com.example.playlistmaker.player.domain.PlayerInteractor
 import com.example.playlistmaker.player.domain.TrackFromAPI
+import com.example.playlistmaker.playlists.domain.AddState
+import com.example.playlistmaker.playlists.domain.Playlist
+import com.example.playlistmaker.playlists.domain.PlaylistInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -15,7 +21,8 @@ import kotlinx.coroutines.launch
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
-    private val favoritesInteractor: FavoritesInteractor
+    private val favoritesInteractor: FavoritesInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     private lateinit var track: TrackFromAPI
@@ -23,10 +30,17 @@ class PlayerViewModel(
     private var playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.Default)
     private var timerJob: Job? = null
     private var isFavoriteLiveData = MutableLiveData<Boolean?>(null)
+    private var bottomSheetLiveData = MutableLiveData<BottomSheetState>()
+    private var addTrackToPlaylistLiveData = MutableLiveData<AddState>()
 
     fun getIsFavoriteLiveData(): LiveData<Boolean?> = isFavoriteLiveData
     fun getTimerLiveData() : LiveData<Int> = timerLiveData
     fun getPlayerStateLiveData() : LiveData<PlayerState> = playerStateLiveData
+    fun getBottomSheetLiveData(): LiveData<BottomSheetState> = bottomSheetLiveData
+    fun getAddTrackToPlaylistLiveData(): LiveData<AddState> = addTrackToPlaylistLiveData
+    init {
+        getBottomSheet()
+    }
     fun setupTrack(trackFromAPI: TrackFromAPI) {
         track = trackFromAPI
         viewModelScope.launch {
@@ -80,20 +94,31 @@ class PlayerViewModel(
             track.isFavorite = newFavoriteStatus
         }
     }
-    //suspend fun isTrackFavorite(trackId: Long): Boolean {
-    //    val favoriteTracks: Flow<List<Long>> = favoritesInteractor.favoriteTracksIds()
-
-    //    val favoriteTracksIds: MutableList<Long> = mutableListOf()
-
-    //    favoriteTracks.collect { list ->
-    //        favoriteTracksIds.addAll(list)
-    //    }
-    //    return favoriteTracksIds.contains(trackId)
-    //}
+    fun addTrackToPlaylist(playlist: Playlist) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val isAdd = playlistInteractor.updatePlaylist(playlist, track)
+            if (isAdd) {
+                addTrackToPlaylistLiveData.postValue(AddState.Success("Добавлено в плейлист " + playlist.playlistName))
+            } else {
+                addTrackToPlaylistLiveData.postValue(AddState.Error("Трек уже добавлен в плейлист " + playlist.playlistName))
+            }
+        }
+    }
+    fun getBottomSheet() {
+        bottomSheetLiveData.postValue(BottomSheetState.Loading)
+        viewModelScope.launch(Dispatchers.IO) {
+            playlistInteractor.getPlaylists().collect { playlist ->
+                bottomSheetLiveData.postValue(BottomSheetState.Content(playlist))
+            }
+        }
+    }
     override fun onCleared() {
         super.onCleared()
         playerInteractor.reset()
         playerStateLiveData.postValue(PlayerState.Default)
+    }
+    fun reset() {
+        playerInteractor.reset()
     }
     companion object {
         const val PROGRESS_DELAY = 300L

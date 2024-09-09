@@ -76,7 +76,7 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/button_margin"
+            android:paddingLeft="@dimen/button_margin"
             android:orientation="horizontal"
             android:background="@drawable/rounded_edittext"
             android:layout_marginTop="56dp"
@@ -92,17 +92,17 @@
                 android:lines="1"
                 android:textSize="@dimen/text_size_little"
                 android:textColor="@color/black"
-                android:drawableLeft="@drawable/search"
+                android:drawableStart="@drawable/search"
                 android:drawablePadding="8dp"
-                android:layout_marginVertical="8dp"/>
+                android:layout_marginVertical="8dp"
+                android:textCursorDrawable="@drawable/cursor" />
             <ImageView
                 android:id="@+id/clearIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:src="@drawable/clear"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
         </FrameLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trackView"

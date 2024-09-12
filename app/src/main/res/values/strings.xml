@@ -39,4 +39,15 @@
     <string name="dialog_cancel">Отмена</string>
     <string name="dialog_finish">Завершить</string>
     <string name="playlist_created">Плейлист "%1$s" создан!</string>
+    <string name="share_playlist">Поделиться</string>
+    <string name="edit_playlist">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="delete_track_dialog">Хотите удалить трек?</string>
+    <string name="yes_dialog">ДА</string>
+    <string name="no_dialog">НЕТ</string>
+    <string name="empty_share">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="delete_playlist_dialog">Хотите удалить плейлист "%s"?</string>
+    <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
+    <string name="dont_have_tracks">В этом плейлисте нет треков</string>
 </resources>

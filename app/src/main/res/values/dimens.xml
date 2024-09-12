@@ -10,4 +10,5 @@
     <dimen name="string_height">61dp</dimen>
     <dimen name="image_radius">8dp</dimen>
     <dimen name="image_radius_track">8px</dimen>
+    <dimen name="image_radius_playlist">2px</dimen>
 </resources>

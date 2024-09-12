@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             style="@style/buttonLeft"/>
         <TextView
+            android:id="@+id/titleNewPlaylist"
             android:paddingLeft="@dimen/button_margin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,6 +104,7 @@
                 app:cursorColor="@color/blue">
 
                 <EditText
+                    android:id="@+id/new_playlist_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/EditTextNewPlaylist"
@@ -122,6 +124,7 @@
                 app:layout_constraintTop_toBottomOf="@id/playlist_name_text_input_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/new_playlist_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/EditTextNewPlaylist"

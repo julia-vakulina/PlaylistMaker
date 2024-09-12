@@ -1,6 +1,7 @@
 package com.example.playlistmaker.media.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
+import com.example.playlistmaker.playlistItem.ui.PlaylistItemFragment
+import com.example.playlistmaker.playlists.domain.Playlist
 import com.example.playlistmaker.playlists.ui.PlaylistAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -22,7 +25,14 @@ class PlaylistsFragment: Fragment() {
     }
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
-    private val adapter = PlaylistAdapter()
+    private val adapter = PlaylistAdapter(
+        object: PlaylistAdapter.PlaylistClickListener {
+            override fun onPlaylistClick(playlist: Playlist) {
+                findNavController().navigate(R.id.action_mediaFragment_to_playlistItemFragment,
+                    PlaylistItemFragment.createArgs(playlist.id))
+            }
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

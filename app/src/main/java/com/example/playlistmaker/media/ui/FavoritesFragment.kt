@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentFavoritesBinding
 import com.example.playlistmaker.player.domain.TrackFromAPI
 import com.example.playlistmaker.player.ui.PlayerFragment
@@ -65,10 +67,11 @@ class FavoritesFragment: Fragment() {
         favoriteTracksAdapter.notifyDataSetChanged()
     }
     fun openPlayer(trackFromAPI: TrackFromAPI) {
-        val playerIntent = Intent(requireContext(), PlayerFragment::class.java)
         val gson = Gson()
         val json = gson.toJson(trackFromAPI)
-        startActivity(playerIntent.putExtra(INTENT_KEY, json))
+        findNavController().navigate(
+            R.id.action_mediaFragment_to_playerFragment,
+            PlayerFragment.createArgs(json))
 
     }
 }

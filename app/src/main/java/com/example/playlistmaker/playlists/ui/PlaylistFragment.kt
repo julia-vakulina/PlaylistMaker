@@ -25,20 +25,20 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PlaylistFragment(): Fragment() {
+open class PlaylistFragment(): Fragment() {
 
     companion object {
         @JvmStatic
         fun newInstance() = PlaylistFragment()
     }
     private var _binding: FragmentNewPlaylistBinding? = null
-    private val binding get() = _binding!!
+     val binding get() = _binding!!
     private var playlistName: String = ""
     private var playlistDescription: String = ""
     private var imageIsEmpty: Boolean = true
     private var pathToPlaylistImage: String = ""
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
-    private val viewModel by viewModel<PlaylistViewModel>()
+    open val viewModel by viewModel<PlaylistViewModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -82,9 +82,6 @@ class PlaylistFragment(): Fragment() {
             .setNeutralButton(R.string.dialog_cancel) { dialog, which ->
 
             }.setPositiveButton(R.string.dialog_finish) { dialog, which ->
-                //if (isAudioPlayer) {
-                //    (requireActivity() as PlayerFragment).closePlaylist()
-                //} else
                 findNavController().navigateUp()
 
             }
@@ -94,27 +91,21 @@ class PlaylistFragment(): Fragment() {
                 !imageIsEmpty) {
                 confirmDialog.show()
             } else {
-                //if (isAudioPlayer) {
-                //    (requireActivity() as PlayerFragment).closePlaylist()
-                //} else
                     findNavController().navigateUp()
             }
         }
         binding.buttonCreatePlaylist.setOnClickListener {
             viewModel.savePlaylist(playlistName, playlistDescription, pathToPlaylistImage)
             viewModel.renderState()
-            //if (isAudioPlayer) {
-            //    (requireActivity() as PlayerFragment).closePlaylist()
-            //} else
-                findNavController().navigateUp()
+            findNavController().navigateUp()
         }
         viewModel.getPlaylistIsCreatedLiveData().observe(viewLifecycleOwner) {
             if (pathToPlaylistImage != "")
-            viewModel.saveImageToAppStorage(
+                viewModel.saveImageToAppStorage(
                     pathToPlaylistImage.toUri(),
                     playlistName
                 )
-                Toast.makeText(requireContext(), resources.getString(R.string.playlist_created, playlistName), Toast.LENGTH_LONG).show()
+            Toast.makeText(requireContext(), resources.getString(R.string.playlist_created, playlistName), Toast.LENGTH_LONG).show()
         }
     }
 

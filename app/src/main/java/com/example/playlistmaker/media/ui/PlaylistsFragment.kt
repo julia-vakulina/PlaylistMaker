@@ -53,7 +53,6 @@ class PlaylistsFragment: Fragment() {
             renderState(state)
         }
     }
-
     override fun onResume() {
         super.onResume()
         viewModel.getPlaylists()

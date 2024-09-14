@@ -8,5 +8,6 @@ import androidx.room.Entity
 )
 class LinkPlaylistTrackEntity (
     val playlistId: Int,
-    val trackId: Int
+    val trackId: Int,
+    val addTime: Long
 )

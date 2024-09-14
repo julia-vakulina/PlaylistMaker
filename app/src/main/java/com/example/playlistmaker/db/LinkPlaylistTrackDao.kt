@@ -14,7 +14,7 @@ interface LinkPlaylistTrackDao {
     @Delete
     fun deleteTrackFromPlaylist(linkPlaylistTrackEntity: LinkPlaylistTrackEntity)
 
-    @Query("SELECT trackId FROM link_playlist_track_table WHERE playlistId = :playlistId")
+    @Query("SELECT trackId FROM link_playlist_track_table WHERE playlistId = :playlistId ORDER BY addTime DESC")
     fun getTracksOfPlaylist(playlistId: Int): List<Int>
 
     @Query("SELECT playlistId FROM link_playlist_track_table WHERE trackId = :trackId AND playlistId = :playlistId")

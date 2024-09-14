@@ -56,7 +56,8 @@ class PlaylistDbConvertor(private val gson: Gson) {
     fun toLinkPlaylistTrackEntity(playlistId: Int, trackId: Int): LinkPlaylistTrackEntity {
         return LinkPlaylistTrackEntity(
             playlistId = playlistId,
-            trackId = trackId
+            trackId = trackId,
+            addTime = System.currentTimeMillis()
         )
     }
 

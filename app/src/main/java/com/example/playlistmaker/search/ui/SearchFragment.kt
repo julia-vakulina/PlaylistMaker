@@ -189,11 +189,11 @@ class SearchFragment : Fragment() {
         outState.putString(SEARCH_TEXT_KEY, searchText)
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        val newSearchText = savedInstanceState?.getString(SEARCH_TEXT_KEY, searchText)
-        editTextSearch.setText(newSearchText)
-    }
+   // override fun onViewStateRestored(savedInstanceState: Bundle?) {
+   //     super.onViewStateRestored(savedInstanceState)
+   //     val newSearchText = savedInstanceState?.getString(SEARCH_TEXT_KEY, searchText)
+   //     editTextSearch.setText(newSearchText)
+   // }
 
 
     private fun clearButtonVisibility(s: CharSequence?): Int {

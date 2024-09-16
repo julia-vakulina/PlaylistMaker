@@ -82,7 +82,15 @@ class PlaylistsRepositoryImpl(
     override suspend fun getTrackOfPlaylist(playlistId: Int): List<TrackFromAPI> {
         val tracksId = appDatabase.linkPlaylistTrackDao().getTracksOfPlaylist(playlistId)
         val trackInPlaylistEntity = appDatabase.trackInPlaylistDao().getTracksOfPlaylist(tracksId)
-        return convertFromTrackInPlaylistEntity(trackInPlaylistEntity)
+        //return convertFromTrackInPlaylistEntity(trackInPlaylistEntity)
+        val tracksInPlaylist = convertFromTrackInPlaylistEntity(trackInPlaylistEntity)
+        val sortedTrackList = emptyList<TrackFromAPI>().toMutableList()
+        tracksId.forEach { id ->
+            tracksInPlaylist.forEach { track ->
+                if (track.trackId.toInt() == id) sortedTrackList += listOf(track)
+            }
+        }
+        return sortedTrackList
     }
 
     override suspend fun getTotalDuration(playlistId: Int): Long {

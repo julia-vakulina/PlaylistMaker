@@ -38,7 +38,8 @@ class RootActivity : AppCompatActivity() {
                     binding.horizontalLine.isVisible = false}
                 R.id.editPlaylistFragment -> {binding.bottomNavigationView.isVisible = false
                     binding.horizontalLine.isVisible = false}
-                else -> {binding.bottomNavigationView.isVisible = true}
+                else -> {binding.bottomNavigationView.isVisible = true
+                binding.horizontalLine.isVisible = true}
             }
         }
     }

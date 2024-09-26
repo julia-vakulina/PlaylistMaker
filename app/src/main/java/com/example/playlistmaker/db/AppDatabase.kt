@@ -8,12 +8,14 @@ import androidx.room.RoomDatabase
     entities = [
         TrackEntity::class,
         PlaylistEntity::class,
-        TrackInPlaylistEntity::class
+        TrackInPlaylistEntity::class,
+        LinkPlaylistTrackEntity::class
     ]
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun trackDao(): TrackDao
     abstract fun playlistDao(): PlaylistDao
     abstract fun trackInPlaylistDao(): TrackInPlaylistDao
+    abstract fun linkPlaylistTrackDao(): LinkPlaylistTrackDao
 
 }

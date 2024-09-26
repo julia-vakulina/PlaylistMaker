@@ -1,6 +1,7 @@
 package com.example.playlistmaker.playlists.ui
 
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,25 +12,40 @@ import com.example.playlistmaker.playlists.domain.PlaylistInteractor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PlaylistViewModel(private val playlistInteractor: PlaylistInteractor): ViewModel()
+open class PlaylistViewModel(private val playlistInteractor: PlaylistInteractor): ViewModel()
 {
     private val playlistIsCreatedLiveData = MutableLiveData<Boolean>()
     fun getPlaylistIsCreatedLiveData(): LiveData<Boolean> = playlistIsCreatedLiveData
     fun savePlaylist(name: String, description: String, path: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            playlistInteractor.insertPlaylist(
-                Playlist(
-                    playlistName = name,
-                    playlistDescription = description,
-                    tracksIds = ArrayList<Int>(),
-                    pathToImage = path
+        if (path != "") {
+            viewModelScope.launch(Dispatchers.IO) {
+                playlistInteractor.insertPlaylist(
+                    Playlist(
+                        playlistName = name,
+                        playlistDescription = description,
+                        tracksIds = ArrayList<Int>(),
+                        pathToImage = playlistInteractor.saveImageToAppStorage(path.toUri(), name)
+                    )
                 )
-            )
+            }
+        } else {
+            viewModelScope.launch(Dispatchers.IO) {
+                playlistInteractor.insertPlaylist(
+                    Playlist(
+                        playlistName = name,
+                        playlistDescription = description,
+                        tracksIds = ArrayList<Int>(),
+                        pathToImage = path
+                    )
+                )
+            }
         }
+
     }
-    fun saveImageToAppStorage(uri: Uri, name: String) {
+    fun saveImageToAppStorage(uri: Uri, name: String)
+    {
         viewModelScope.launch(Dispatchers.IO) {
-            playlistInteractor.saveImageToAppStorage(uri, name)
+           playlistInteractor.saveImageToAppStorage(uri, name)
         }
     }
     fun renderState() {

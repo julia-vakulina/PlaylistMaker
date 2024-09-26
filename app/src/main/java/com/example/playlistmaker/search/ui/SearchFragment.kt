@@ -3,6 +3,7 @@ package com.example.playlistmaker.search.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -174,9 +175,9 @@ class SearchFragment : Fragment() {
             }
             override fun afterTextChanged(s: Editable?) {
                 searchText = s.toString()
-                if (searchText.isEmpty()) {
-                    viewModel.tracksListVisible(false)
-                }
+                //if (searchText.isEmpty()) {
+                //    viewModel.tracksListVisible(false)
+                //}
             }
         }
         editTextSearch.addTextChangedListener(simpleTextWatcher)
@@ -188,11 +189,13 @@ class SearchFragment : Fragment() {
         outState.putString(SEARCH_TEXT_KEY, searchText)
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        val newSearchText = savedInstanceState?.getString(SEARCH_TEXT_KEY, searchText)
-        editTextSearch.setText(newSearchText)
-    }
+   // override fun onViewStateRestored(savedInstanceState: Bundle?) {
+   //     super.onViewStateRestored(savedInstanceState)
+   //     val newSearchText = savedInstanceState?.getString(SEARCH_TEXT_KEY, searchText)
+   //     editTextSearch.setText(newSearchText)
+   // }
+
+
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE

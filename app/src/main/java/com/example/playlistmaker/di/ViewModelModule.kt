@@ -4,6 +4,9 @@ import android.util.Log
 import com.example.playlistmaker.media.ui.FavoritesViewModel
 import com.example.playlistmaker.media.ui.PlaylistsViewModel
 import com.example.playlistmaker.player.ui.PlayerViewModel
+import com.example.playlistmaker.playlistItem.ui.PlaylistItemViewModel
+import com.example.playlistmaker.playlists.domain.Playlist
+import com.example.playlistmaker.playlists.ui.EditPlaylistViewModel
 import com.example.playlistmaker.playlists.ui.PlaylistViewModel
 import com.example.playlistmaker.search.ui.SearchViewModel
 import com.example.playlistmaker.settings.ui.SettingsViewModel
@@ -30,5 +33,11 @@ val viewModelModule = module {
     }
     viewModel {
         PlaylistViewModel(get())
+    }
+    viewModel { (playlistId: Int) ->
+        PlaylistItemViewModel(playlistId, get())
+    }
+    viewModel { (playlist: Playlist) ->
+        EditPlaylistViewModel(get(), playlist)
     }
 }
